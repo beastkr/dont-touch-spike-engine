@@ -45,7 +45,6 @@ class Button extends GameObject implements IButton, ICollidableGameObject {
         const pos = this.transform.position;
 
         this.text.render(delta, campos);
-        this.collider.drawDebug(ctx);
         
     }
 

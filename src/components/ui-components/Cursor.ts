@@ -28,7 +28,6 @@ class Cursor extends CollidableObject implements ICollidableGameObject{
     }
     public override render(delta: number, campos?: Vector2) {
         super.render(delta, campos);
-        this.collider.drawDebug(this.spriterenderer.ctx);
     }
 }
 

@@ -9,7 +9,7 @@ class ResourceManager {
                 const img = new Image();
                 img.onload = () => resolve(img);
                 img.onerror = reject;
-                img.src = '../assets/images/' + src;
+                img.src = 'https://beastkr.github.io/dont-touch-spike-engine/assets/images/' + src;
             });
         };
 
