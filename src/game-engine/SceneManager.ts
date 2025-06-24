@@ -4,6 +4,7 @@
     import MenuScene from "../game/MenuScene";
     import LoadingScene from "../game/LoadingScene";
     import GameScene from "../game/GameScene";
+import InputManager from "../InputManager";
 
     class SceneManager {
         static activeScene: string;
@@ -29,6 +30,7 @@
         }
 
         static setActive(key: string) {
+            InputManager.reset();
             if (SceneManager.sceneList.has(key)) {
                 ColliderController.reset(key);
                 SceneManager.getCurrentScene().reset();

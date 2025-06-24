@@ -3,7 +3,8 @@ import BoxCollider from '../Collider/BoxCollider';
 import InputManager from '../../InputManager';
 import SpriteRenderer from '../../graphics/SpriteRenderer';
 import Text from './Text';
-class Button extends GameObject implements IButton, ICollidableGameObject {
+import CollidableObject from '../../game-objects/CollidableObject';
+class Button extends CollidableObject implements IButton, ICollidableGameObject {
     public collider: ICollider;
     public text: Text;
     private hovered: boolean;

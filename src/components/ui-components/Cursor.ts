@@ -9,7 +9,7 @@ class Cursor extends CollidableObject implements ICollidableGameObject{
     public clicking: boolean = false;
     public constructor(sceneKey: string, pos?: Vector2, scale?: Vector2) {
         super(sceneKey, pos, scale);
-        InputManager.mousepos = [0,0,0,0]
+        InputManager.reset();
         if (pos && scale) {
             this.collider = new BoxCollider(sceneKey, pos, scale);
         }
@@ -28,6 +28,10 @@ class Cursor extends CollidableObject implements ICollidableGameObject{
     }
     public override render(delta: number, campos?: Vector2) {
         super.render(delta, campos);
+    }
+
+    public reset() {
+        this.transform.position = new Vector2();
     }
 }
 

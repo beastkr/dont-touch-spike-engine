@@ -11,14 +11,15 @@ import SceneManager from "../../game-engine/SceneManager";
 import GameObject from "../../game-objects/GameObject";
 import ScoreManager from "./ScoreManager";
 import AudioPlayer from "../../Audio/AudioPlayer";
+import { JUMP_FORCE, PLAYER_SPEED } from "../../constants/physicconfig";
 
 class PlayerDTTS extends Player {
     private jumpCounter: number = 0;
     private jumpable: boolean = true;
     private jumping: boolean = false
     private touchCeiling: boolean = false;
-    private jumpForce: Force = new Force(new Vector2(0, -800));
-    private speed: Force = new Force(new Vector2(200, 0));
+    private jumpForce: Force = new Force(new Vector2(0, -JUMP_FORCE));
+    private speed: Force = new Force(new Vector2(PLAYER_SPEED, 0));
     public facingLeft: boolean = false;
     private bouncing: boolean = false;
     private onground: boolean = false;
@@ -30,10 +31,12 @@ class PlayerDTTS extends Player {
         this.spriterenderer = new SpriteRenderer(PLAYER_SPRITE);
         this.animator = new Animator(this.spriterenderer);
         this.animator.loadAnim(true, PLAYER_SPRITE, 16, 16);
+        this.collider.scale.y = 0.5* this.collider.scale.y
     }
 
     public override update(delta: number) { 
         super.update(delta);
+        this.transform.rotation = 0;
         Physics.addforce(this.transform.position, this.speed, delta);
         if (!this.onground) {
             Physics.addforce(this.transform.position, Physics.gravity, delta);
@@ -80,6 +83,7 @@ class PlayerDTTS extends Player {
         }        
         if (this.jumping&&!this.touchCeiling) {
             Physics.addforce(this.transform.position, this.jumpForce, delta);
+            this.transform.rotation = -45;
         }
 
         this.animator.play(delta);

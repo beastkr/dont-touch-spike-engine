@@ -33,7 +33,6 @@ class InputManager {
             InputManager.mousepos[1] = y;
             InputManager.mousepos[2] = x;
             InputManager.mousepos[3] = y;
-
         });
         document.addEventListener("visibilitychange", () => {
             if (document.visibilityState === 'hidden') {
@@ -48,6 +47,9 @@ class InputManager {
 
     }
 
+    static reset() {
+        InputManager.mousepos = [0,0,0,0];
+    }
 }
 
 export default InputManager

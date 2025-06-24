@@ -30,6 +30,7 @@ class Scene implements IScene{
         this.originalPos.set(object, [t,s]);
     }
     public reset() {
+
         for (const object of this.gameObject) {
             const original = this.originalPos.get(object);
             if (original) {

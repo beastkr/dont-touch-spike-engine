@@ -4,22 +4,35 @@ import Scene from "../game-engine/Scene";
 import CollidableObject from "../game-objects/CollidableObject";
 import SpriteRenderer from "../graphics/SpriteRenderer";
 import PlayerDTTS from "./objects/PlayerDTTS";
-import { BACKGROUND_IMAGE, GROUND, PLAYER_SPRITE } from "../constants/global";
+import { BACKGROUND_IMAGE, BUTTON_SPRITE, GROUND, PLAYER_SPRITE } from "../constants/global";
 import SpikePool from "./objects/SpikePool";
 import GameObject from "../game-objects/GameObject";
 import ScoreManager from "./objects/ScoreManager";
 import Text from "../components/ui-components/Text";
 import AudioChannel from "../Audio/AudioChannel";
 import { JUMP_SOUND } from "../constants/sfx";
+import TileSet from "../tile/TileSet";
+import TileMap from "../tile/TileMap";
 class GameScene extends Scene {
     constructor() {
         super('game');
+
+
         let jumpAudio = new AudioChannel(this.name, JUMP_SOUND, 'jump');
         this.pushGameObject(jumpAudio);
 
         let bg = new GameObject(this.name, new Vector2(200,350), new Vector2(400,700));
         bg.spriterenderer = new SpriteRenderer(BACKGROUND_IMAGE);
         this.pushGameObject(bg)
+
+
+        TileSet.addToTileSet(BUTTON_SPRITE);
+        let tile = new TileMap(this.name, [[0,0,0,0,0,0,0,0,0]], new Vector2(50,50), new Vector2(0,550-50));
+        this.pushGameObject(tile);
+        
+        let tile2 = new TileMap(this.name, [[0,0,0,0,0,0,0,0,0]], new Vector2(50,50), new Vector2(0,0));
+        tile2.transform.rotation = 180;
+        this.pushGameObject(tile2)
 
         let format = [String(ScoreManager.score), '100px Arieal', 'white'];
         let scoreText = new Text(this.name, new Vector2(200,350), new Vector2(200,100), format);
@@ -36,20 +49,20 @@ class GameScene extends Scene {
         wall.collider.layer = 'wall';
         this.pushGameObject(wall);    
         
-        let ground = new CollidableObject(this.name, new Vector2(200, 700), new Vector2(400, 350));
-        ground.spriterenderer = new SpriteRenderer(GROUND);
-        ground.collider.layer = 'spike';
-        this.pushGameObject(ground);
+        // let ground = new CollidableObject(this.name, new Vector2(200, 700), new Vector2(400, 350));
+        // ground.spriterenderer = new SpriteRenderer(GROUND);
+        // ground.collider.layer = 'spike';
+        // this.pushGameObject(ground);
 
-        let ceiling = new CollidableObject(this.name, new Vector2(200, 0), new Vector2(400, 50));
-        ceiling.transform.rotation = 180;
-        ceiling.spriterenderer = new SpriteRenderer(GROUND);
-        ceiling.collider.layer = 'spike';
-        this.pushGameObject(ceiling);
+        // let ceiling = new CollidableObject(this.name, new Vector2(200, 0), new Vector2(400, 50));
+        // ceiling.transform.rotation = 180;
+        // ceiling.spriterenderer = new SpriteRenderer(GROUND);
+        // ceiling.collider.layer = 'spike';
+        // this.pushGameObject(ceiling);
 
         let player = new PlayerDTTS(this.name, new Vector2(200, 200), new Vector2(30, 30));
-        let spike = new SpikePool(this.name, 5, 90, 0);
-        let spike2 = new SpikePool(this.name, 5, 270, 400);
+        let spike = new SpikePool(this.name, 6, 90, 0);
+        let spike2 = new SpikePool(this.name, 6, 270, 400);
 
         player.spikeLeft = spike;
         player.spikeright = spike2;
@@ -63,7 +76,6 @@ class GameScene extends Scene {
     public override reset() {
         super.reset();
         ScoreManager.reset();
-        
         
     }
 

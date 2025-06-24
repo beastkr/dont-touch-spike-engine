@@ -2,15 +2,22 @@ class ResourceManager {
     static imagelist: Record<string, HTMLImageElement> = {};
     static soundList: Record<string, HTMLAudioElement> = {};
     static imgpathlist: string[] = [];
+    static deploy: boolean = false;
+    static KEY: string;
     static initialize() {
+
     }
     static async loadImages(list: string[]) {
+        if (ResourceManager.deploy){
+            ResourceManager.KEY='https://beastkr.github.io/dont-touch-spike-engine'
+        }
+        else ResourceManager.KEY = '..'       
         const loadImage = (src: string): Promise<HTMLImageElement> => {
             return new Promise((resolve, reject) => {
                 const img = new Image();
                 img.onload = () => resolve(img);
                 img.onerror = reject;
-                img.src = '../assets/images/' + src;
+                img.src = ResourceManager.KEY + '/assets/images/' + src;
             });
         };
 
@@ -28,9 +35,13 @@ class ResourceManager {
 
 
     static async loadSounds(list: string[]) {
+        if (ResourceManager.deploy){
+            ResourceManager.KEY='https://beastkr.github.io/dont-touch-spike-engine'
+        }
+        else ResourceManager.KEY = '..'
         const loadSound = (src: string): Promise<HTMLAudioElement> => {
             return new Promise((resolve, reject) => {
-                const sfx = new Audio('../assets/sfx/' + src);
+                const sfx = new Audio(ResourceManager.KEY + '/assets/sfx/' + src);
                 sfx.preload = 'auto';
 
                 sfx.oncanplaythrough = () => resolve(sfx); // wait until it's ready to play

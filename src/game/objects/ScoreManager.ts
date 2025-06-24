@@ -4,15 +4,21 @@ class ScoreManager {
     static highscore: number = 0;
     static text: Text;
     static highScoreText: Text;
+    static initialize() {
+        ScoreManager.highscore = Number(localStorage.getItem('highscore'));
+        ScoreManager.highScoreText.text[0] = String(ScoreManager.highscore)
+    }
     static reset() {
-        this.score = 0;
+        ScoreManager.score = 0;
         ScoreManager.text.text[0] = '0'
     }
     static increase() {
-        this.score++;
-        if (this.score > this.highscore) {
-            this.highscore = this.score;
-            this.highScoreText.text[0] = String(this.highscore)
+        ScoreManager.score++;
+        if (ScoreManager.score > ScoreManager.highscore) {
+            ScoreManager.highscore = ScoreManager.score;
+            localStorage.setItem('highscore', String(ScoreManager.highscore))
+            ScoreManager.highScoreText.text[0] = String(ScoreManager.highscore)
+            console.log(localStorage)
         }
         ScoreManager.text.text[0] = String(ScoreManager.score);
     }
