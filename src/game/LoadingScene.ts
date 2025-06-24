@@ -1,7 +1,9 @@
 import Scene from "../game-engine/Scene";
 import ResourceManager from "../ResourceManager";
 import * as PATH from '../constants/global'
+import * as SFX_PATH from '../constants/sfx'
 import SceneManager from "../game-engine/SceneManager";
+import AudioPlayer from "../Audio/AudioPlayer";
 
 class LoadingScene extends Scene {
     private resources: string[];
@@ -10,12 +12,20 @@ class LoadingScene extends Scene {
         this.resources = Object.values(PATH);
         ResourceManager.addtolist(this.resources);
         ResourceManager.loadImages(this.resources).then(() => {
-            console.log('All resources loaded');
-            SceneManager.initScene();
-            SceneManager.setActive('menu');
+            console.log('All Images loaded');
+            this.resources = Object.values(SFX_PATH);
+            ResourceManager.loadSounds(this.resources).then(()=>{
+                console.log('All SFX Loaded');
+                AudioPlayer.initialize();
+                SceneManager.initScene();
+                SceneManager.setActive('menu');
+            }).catch((error)=>{
+                console.error('Error loading resources:', error);
+            });            
         }).catch((error) => {
             console.error('Error loading resources:', error);
         });
+
     }
 
 

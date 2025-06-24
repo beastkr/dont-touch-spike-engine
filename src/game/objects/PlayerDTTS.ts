@@ -10,6 +10,7 @@ import SpikePool from "./SpikePool";
 import SceneManager from "../../game-engine/SceneManager";
 import GameObject from "../../game-objects/GameObject";
 import ScoreManager from "./ScoreManager";
+import AudioPlayer from "../../Audio/AudioPlayer";
 
 class PlayerDTTS extends Player {
     private jumpCounter: number = 0;
@@ -55,6 +56,7 @@ class PlayerDTTS extends Player {
         }
 
         if(this.collider.collide('wall')[1] && !this.bouncing) {
+            AudioPlayer.play('jump');
             ScoreManager.increase();
             this.spikeLeft.expose();
             this.spikeright.expose();
@@ -63,6 +65,7 @@ class PlayerDTTS extends Player {
             this.speed.power.x = -this.speed.power.x;
             this.transform.flip.x = - this.transform.flip.x;
             this.spriterenderer.flipimage(this.transform.flip);
+
         }
         else if (!this.collider.collide('wall')[1]) {
             this.bouncing = false;

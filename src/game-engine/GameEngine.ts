@@ -1,3 +1,4 @@
+import AudioPlayer from '../Audio/AudioPlayer';
 import Renderer from '../graphics/Renderer';
 import InputManager from '../InputManager';
 import Physics from '../physics/Physics';

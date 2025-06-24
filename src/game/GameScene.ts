@@ -9,9 +9,13 @@ import SpikePool from "./objects/SpikePool";
 import GameObject from "../game-objects/GameObject";
 import ScoreManager from "./objects/ScoreManager";
 import Text from "../components/ui-components/Text";
+import AudioChannel from "../Audio/AudioChannel";
+import { JUMP_SOUND } from "../constants/sfx";
 class GameScene extends Scene {
     constructor() {
         super('game');
+        let jumpAudio = new AudioChannel(this.name, JUMP_SOUND, 'jump');
+        this.pushGameObject(jumpAudio);
 
         let bg = new GameObject(this.name, new Vector2(200,350), new Vector2(400,700));
         bg.spriterenderer = new SpriteRenderer(BACKGROUND_IMAGE);

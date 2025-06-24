@@ -1,0 +1,1 @@
+export const JUMP_SOUND = 'jump.mp3'

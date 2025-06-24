@@ -36,28 +36,12 @@ public expose() {
         this.hide();
         return;
     }
-
-    const maxRetries = 3; // Try avoiding overlap max 3 times
+    
     for (const spike of this.spikelist) {
-        let attempts = 0;
         let r: number;
-        let success = false;
 
-        while (attempts < maxRetries && !success) {
-            r = this.getRandom(50, 500);
-            spike.transform.position = new Vector2(this.marginPos + offset, r);
-
-            const [, isColliding] = spike.collider.collide('spike');
-            if (!isColliding) {
-                success = true;
-            }
-
-            attempts++;
-        }
-
-        if (!success) {
-            console.warn('Spike placement failed after retries.');
-        }
+        r = this.getRandom(50, 500);
+        spike.transform.position = new Vector2(this.marginPos + offset, r);
     }
 }
 

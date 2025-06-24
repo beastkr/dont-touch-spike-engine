@@ -1,5 +1,6 @@
 class ResourceManager {
     static imagelist: Record<string, HTMLImageElement> = {};
+    static soundList: Record<string, HTMLAudioElement> = {};
     static imgpathlist: string[] = [];
     static initialize() {
     }
@@ -9,7 +10,7 @@ class ResourceManager {
                 const img = new Image();
                 img.onload = () => resolve(img);
                 img.onerror = reject;
-                img.src = 'https://beastkr.github.io/dont-touch-spike-engine/assets/images/' + src;
+                img.src = '../assets/images/' + src;
             });
         };
 
@@ -24,6 +25,31 @@ class ResourceManager {
             }
         }
     }
+
+
+    static async loadSounds(list: string[]) {
+        const loadSound = (src: string): Promise<HTMLAudioElement> => {
+            return new Promise((resolve, reject) => {
+                const sfx = new Audio('../assets/sfx/' + src);
+                sfx.preload = 'auto';
+
+                sfx.oncanplaythrough = () => resolve(sfx); // wait until it's ready to play
+                sfx.onerror = () => reject(new Error(`Failed to load sound: ${src}`));
+            });
+        };
+
+        for (const filename of list) {
+            try {
+                const audio = await loadSound(filename);
+                const key = '/assets/sfx/' + filename;
+                ResourceManager.soundList[key] = audio;
+                console.log(`Loaded sound: ${key}`);
+            } catch (error) {
+                console.error(`Failed to load sound: ${filename}`, error);
+            }
+        }
+    }
+
 
 
     static addtolist(list: string[]) {
