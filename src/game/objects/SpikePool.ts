@@ -2,6 +2,7 @@ import Spike from './Spike'
 import GameObject from '../../game-objects/GameObject';
 import Vector2 from '../../components/Vector2';
 import PlayerDTTS from './PlayerDTTS';
+import { getRandom } from '../../math/Random';
 
 class SpikePool extends GameObject {
     private spikelist: Spike[];
@@ -70,7 +71,7 @@ public expose() {
     }
     
     public getRandom(min: number, max: number) {
-        return Math.floor(Math.random() * (max - min)) + min;
+        return getRandom(min,max);
         
     }
 

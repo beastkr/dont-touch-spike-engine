@@ -17,8 +17,9 @@ class Text extends GameObject {
         ctx.fillStyle = this.text[2];
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-
-        ctx.fillText(this.text[0], pos.x, pos.y);
+        let offsetX = campos?.x || 0;
+        let offsetY = campos?.y || 0;
+        ctx.fillText(this.text[0], pos.x - offsetX, pos.y - offsetY);
     }
     public update(delta: number) {
 

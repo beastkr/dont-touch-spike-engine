@@ -17,11 +17,12 @@ class LoadingScene extends Scene {
         ResourceManager.addtolist(this.resources);
         ResourceManager.loadImages(this.resources).then(() => {
             console.log('All Images loaded');
+            TileSet.initialize();
+            TileSet.addToTileSet(PATH.BUTTON_SPRITE);
             this.resources = Object.values(SFX_PATH);
             ResourceManager.loadSounds(this.resources).then(()=>{
                 console.log('All SFX Loaded');
                 AudioPlayer.initialize();
-                TileSet.initialize();
                 SceneManager.initScene();
                 SceneManager.setActive('menu');
                 ScoreManager.initialize();

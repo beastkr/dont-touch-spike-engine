@@ -19,13 +19,19 @@ class MenuScene extends Scene {
         bg.spriterenderer = new SpriteRenderer(BACKGROUND_IMAGE);
         this.pushGameObject(bg);
 
-        let format = [String(ScoreManager.score), '100px Arieal', 'white'];
-        let scoreText = new Text(this.name, new Vector2(200,100), new Vector2(200,100), format);
+        let format = ['DON\'T TOUCH\nTHE SPIKE', '30px Times New Roman', 'white'];
+        let gameName = new Text(this.name, new Vector2(200, 100), new Vector2(), format);
+        this.pushGameObject(gameName);
+
+        format = [String(ScoreManager.score), '100px Arieal', 'white'];
+        let scoreText = new Text(this.name, new Vector2(200,200), new Vector2(200,100), format);
         ScoreManager.highScoreText = scoreText;
         this.pushGameObject(scoreText);
 
         let button = new Button(this.name, new Vector2(200, 400), new Vector2(200, 100));
         button.setText('Start Game');
+        button.text.text[1] = '40px Times New Roman';
+        button.text.text[2] = 'white'
         button.addonclick(() => {
             SceneManager.setActive('game');
         });

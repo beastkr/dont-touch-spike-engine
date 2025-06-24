@@ -13,6 +13,7 @@ import AudioChannel from "../Audio/AudioChannel";
 import { JUMP_SOUND } from "../constants/sfx";
 import TileSet from "../tile/TileSet";
 import TileMap from "../tile/TileMap";
+import StupidBird from "./objects/StupidBird";
 class GameScene extends Scene {
     constructor() {
         super('game');
@@ -23,10 +24,11 @@ class GameScene extends Scene {
 
         let bg = new GameObject(this.name, new Vector2(200,350), new Vector2(400,700));
         bg.spriterenderer = new SpriteRenderer(BACKGROUND_IMAGE);
-        this.pushGameObject(bg)
+        this.pushGameObject(bg);
 
+        let bird = new StupidBird(this.name, new Vector2(100,100), new Vector2(100,100))
+        this.pushGameObject(bird);
 
-        TileSet.addToTileSet(BUTTON_SPRITE);
         let tile = new TileMap(this.name, [[0,0,0,0,0,0,0,0,0]], new Vector2(50,50), new Vector2(0,550-50));
         this.pushGameObject(tile);
         
@@ -35,7 +37,7 @@ class GameScene extends Scene {
         this.pushGameObject(tile2)
 
         let format = [String(ScoreManager.score), '100px Arieal', 'white'];
-        let scoreText = new Text(this.name, new Vector2(200,350), new Vector2(200,100), format);
+        let scoreText = new Text(this.name, new Vector2(200,200), new Vector2(200,100), format);
         ScoreManager.text = scoreText;
         this.pushGameObject(scoreText);
 
@@ -75,6 +77,7 @@ class GameScene extends Scene {
 
     public override reset() {
         super.reset();
+
         ScoreManager.reset();
         
     }

@@ -7,6 +7,7 @@ import ResourceManager from "../ResourceManager";
 import Cursor from "../components/ui-components/Cursor";
 import Renderer from "../graphics/Renderer";
 import GameObject from "../game-objects/GameObject";
+import { CAMERA_POSITION } from "../constants/graphic";
 
 class Scene implements IScene{
     public name: string;
@@ -18,9 +19,8 @@ class Scene implements IScene{
         this.originalPos = new Map<GameObject, [IVector2, IVector2]>();
         this.name = string ? string : 'default';
         this.gameObject = [];
-        this.camera = new Camera(this.name);
-        if (!Renderer.canvas) {Renderer.initialize(this.camera);}        
-        InputManager.initialize();  
+        this.camera = new Camera(this.name, CAMERA_POSITION);
+        if (!Renderer.canvas) {Renderer.initialize(this.camera);}
     }
 
     public pushGameObject(object: IGameObject) {
