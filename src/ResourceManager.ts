@@ -2,7 +2,7 @@ class ResourceManager {
     static imagelist: Record<string, HTMLImageElement> = {};
     static soundList: Record<string, HTMLAudioElement> = {};
     static imgpathlist: string[] = [];
-    static deploy: boolean = false;
+    static deploy: boolean = true;
     static KEY: string;
     static initialize() {
 

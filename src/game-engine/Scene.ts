@@ -37,7 +37,6 @@ class Scene implements IScene{
                 object.transform.position = new Vector2(original[0].x, original[0].y);
                 object.transform.scale = new Vector2(original[1].x, original[1].y);
             }
-
             if ('reset' in object && typeof object.reset === 'function') {
                 (object as any).reset();
             }

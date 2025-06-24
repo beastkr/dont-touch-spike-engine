@@ -1,6 +1,7 @@
 import Component from '../components/Component';
 import ResourceManager from '../ResourceManager';
 import Vector2 from '../components/Vector2';
+import { CAMERA_SCALE } from '../constants/graphic';
 
 class SpriteRenderer extends Component implements ISpriteRenderder{
     public color: Color;
@@ -33,6 +34,12 @@ class SpriteRenderer extends Component implements ISpriteRenderder{
         const canvas = document.querySelector('canvas')!;
         this.ctx = canvas.getContext('2d');
         let ctx = this.ctx;
+        
+        // const sc = window.devicePixelRatio || 1;
+        // canvas.width = CAMERA_SCALE.x * sc;
+        // canvas.height = CAMERA_SCALE.y * sc;
+        // ctx?.scale(sc, sc); // Draw as if normal
+
 
         if (!ctx) return;
 

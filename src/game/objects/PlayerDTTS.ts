@@ -87,10 +87,11 @@ class PlayerDTTS extends Player {
         }
 
         this.animator.play(delta);
-        if (InputManager.key == ' ' && this.jumpable) {
+        if ((InputManager.key == ' ' || InputManager.mousepos[2] != 0) && this.jumpable) {
             this.jumpable = false;
             this.jumping = true;
             this.jumpCounter = 0;
+            InputManager.mousepos[2]=0;
         }
         if (this.collider.collide('spike')[1]){
             this.gameover();
