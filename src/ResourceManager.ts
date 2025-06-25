@@ -26,7 +26,6 @@ class ResourceManager {
                 const img = await loadImage(filename);
                 const key = '/assets/images/' + filename;
                 ResourceManager.imagelist[key] = img;
-                console.log(`Loaded image: ${key}`);
             } catch (error) {
                 console.error(`Failed to load image: ${filename}`, error);
             }
@@ -54,7 +53,6 @@ class ResourceManager {
                 const audio = await loadSound(filename);
                 const key = '/assets/sfx/' + filename;
                 ResourceManager.soundList[key] = audio;
-                console.log(`Loaded sound: ${key}`);
             } catch (error) {
                 console.error(`Failed to load sound: ${filename}`, error);
             }

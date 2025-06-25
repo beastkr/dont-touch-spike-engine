@@ -32,8 +32,10 @@ interface ITime {
 interface IGameObject {
     transform: ITransform;
     spriterenderer: ISpriteRenderder;
+    originalTransform: ITransform;
     update(delta:number): void;
     render(delta:number, campos?: IVector2): void;
+    reset(): void;
 }
 interface ICollidableGameObject extends IGameObject{
     collider: ICollider;

@@ -37,8 +37,6 @@ class MenuScene extends Scene {
         });
         this.pushGameObject(button);
         this.pushGameObject(new Cursor(this.name, new Vector2(0,0), new Vector2(20,20)));
-        console.log(this.gameObject)
-        console.log(ColliderController.sceneColliderList)
     }
 
     public override update(delta: number): void {

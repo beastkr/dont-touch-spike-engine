@@ -22,6 +22,7 @@ class Cursor extends CollidableObject implements ICollidableGameObject{
 
     public override update(delta: number){
         super.update(delta);
+        this.clicking = InputManager.mousepos[3] == 0;
         this.transform.position.x = InputManager.mousepos[0];
         this.transform.position.y = InputManager.mousepos[1];
 

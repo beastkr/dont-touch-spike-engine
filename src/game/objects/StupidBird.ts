@@ -9,12 +9,14 @@ import { CAMERA_POSITION, CAMERA_SCALE } from "../../constants/graphic";
 import { getRandom } from "../../math/Random";
 
 class StupidBird extends AnimatedGameObject {
-    private speed:number = 100;
-    public constructor(sceneKey: string, pos?: IVector2, scale?: IVector2){
+    private speed:number;
+    public constructor(sceneKey: string,speed: number , pos?: IVector2, scale?: IVector2){
         super(sceneKey, pos, scale);
+        this.speed = speed;
         this.spriterenderer = new SpriteRenderer(BIRD_SPRITE);
         this.animator = new Animator(this.spriterenderer);
         this.animator.loadAnim(true, BIRD_SPRITE, 16,16);
+        this.reset();
     }
 
     public update(delta:number) {

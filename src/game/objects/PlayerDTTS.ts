@@ -1,5 +1,5 @@
 import Player from "../../game-objects/Player";
-import { BUTTON_SPRITE, BACKGROUND_IMAGE, PLAYER_SPRITE } from "../../constants/global";   
+import { PLAYER_SPRITE } from "../../constants/global";   
 import SpriteRenderer from "../../graphics/SpriteRenderer";
 import Physics from "../../physics/Physics";
 import Force from "../../physics/Force";
@@ -8,7 +8,6 @@ import Animator from "../../graphics/Animator";
 import InputManager from "../../InputManager";
 import SpikePool from "./SpikePool";
 import SceneManager from "../../game-engine/SceneManager";
-import GameObject from "../../game-objects/GameObject";
 import ScoreManager from "./ScoreManager";
 import AudioPlayer from "../../Audio/AudioPlayer";
 import { JUMP_FORCE, PLAYER_SPEED } from "../../constants/physicconfig";
@@ -31,7 +30,8 @@ class PlayerDTTS extends Player {
         this.spriterenderer = new SpriteRenderer(PLAYER_SPRITE);
         this.animator = new Animator(this.spriterenderer);
         this.animator.loadAnim(true, PLAYER_SPRITE, 16, 16);
-        this.collider.scale.y = 0.5* this.collider.scale.y
+        this.collider.scale.x = this.transform.scale.x/2;
+        this.collider.scale.y = this.transform.scale.y/2;
     }
 
     public override update(delta: number) { 
@@ -101,13 +101,15 @@ class PlayerDTTS extends Player {
 
     public override render(delta: number, campos?: IVector2) {
         super.render(delta, campos);
+        //this.collider.drawDebug(this.spriterenderer.ctx)
     }
     public statReset() {
         this.onground = false;
         this.touchCeiling = false;
     }
 
-    public reset() {
+    public override reset() {
+        super.reset();
         this.onground = false;
         this.touchCeiling = false;
         this.bouncing = false;

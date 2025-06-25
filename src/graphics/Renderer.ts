@@ -1,4 +1,7 @@
+import Text from "../components/ui-components/Text";
+import Vector2 from "../components/Vector2";
 import { CAMERA_SCALE } from "../constants/graphic";
+import SceneManager from "../game-engine/SceneManager";
 
 class Renderer{
     static canvas: HTMLCanvasElement;
@@ -61,6 +64,21 @@ class Renderer{
         Renderer.ratioX = width/CAMERA_SCALE.x;
         Renderer.ratioY = height/CAMERA_SCALE.y;
         Renderer.canvas.style.imageRendering = "pixelated"; // Keep pixel art sharp
+    }
+
+    static pause() {
+        const canvas = document.querySelector('canvas')!;
+        const ctx = canvas.getContext('2d');
+        
+        if (ctx) {
+            ctx.globalAlpha = 0.9;
+            ctx.imageSmoothingEnabled = false;
+            ctx.fillStyle = 'black';
+            ctx.fillRect(0, 0, Renderer.camera.transform.scale.x, Renderer.camera.transform.scale.y);
+            ctx.globalAlpha = 1;
+        }
+        let t = new Text('', new Vector2(200,250), new Vector2(), ['Click to continue', '30px Ariel', 'white']);
+        t.render(0, SceneManager.getCurrentScene().camera.transform.position);
     }
 
 }

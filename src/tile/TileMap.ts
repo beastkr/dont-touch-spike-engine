@@ -21,6 +21,15 @@ class TileMap extends GameObject {
         }
     }
 
+    public override reset(): void {
+        super.reset();
+        for (var tiles of this.map) {
+            for (var tile of tiles) {
+                tile.reset();
+            }
+        }
+    }
+
     public override update(delta: number): void {
         for (var tiles of this.map) {
             for (var tile of tiles) {

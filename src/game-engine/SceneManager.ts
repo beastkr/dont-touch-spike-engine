@@ -1,15 +1,16 @@
-    import ColliderController from "../components/Collider/ColliderController";
-    import Scene from "./Scene";
-    import Renderer from "../graphics/Renderer";
-    import MenuScene from "../game/MenuScene";
-    import LoadingScene from "../game/LoadingScene";
-    import GameScene from "../game/GameScene";
+import ColliderController from "../components/Collider/ColliderController";
+import Scene from "./Scene";
+import Renderer from "../graphics/Renderer";
+import MenuScene from "../game/MenuScene";
+import LoadingScene from "../game/LoadingScene";
+import GameScene from "../game/GameScene";
 import InputManager from "../InputManager";
 
     class SceneManager {
         static activeScene: string;
         static sceneList: Map<string, IScene>;
         static pausing: boolean = false;
+        static resumable: boolean = false;
         static initialize() {
             SceneManager.sceneList = new Map<string, IScene>();
             SceneManager.sceneList.set('loading', new LoadingScene());
@@ -48,9 +49,12 @@ import InputManager from "../InputManager";
         }
 
         static pause() {
+            console.log('pausing')
             SceneManager.pausing = true;
+            SceneManager.resumable = false;
         }
         static resume() {
+            console.log('resume')
             SceneManager.pausing = false;
         }
     }

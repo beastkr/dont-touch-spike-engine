@@ -8,6 +8,8 @@ import Cursor from "../components/ui-components/Cursor";
 import Renderer from "../graphics/Renderer";
 import GameObject from "../game-objects/GameObject";
 import { CAMERA_POSITION } from "../constants/graphic";
+import Transform from "../components/Transform";
+import SceneManager from "./SceneManager";
 
 class Scene implements IScene{
     public name: string;
@@ -26,20 +28,13 @@ class Scene implements IScene{
     public pushGameObject(object: IGameObject) {
         this.gameObject.push(object);
         let t = new Vector2(object.transform.position.x, object.transform.position.y);
-        let s = new Vector2(object.transform.scale.x, object.transform.scale.y)
-        this.originalPos.set(object, [t,s]);
+        let s = new Vector2(object.transform.scale.x, object.transform.scale.y);
+        object.originalTransform = new Transform(t,s);
+        object.originalTransform.rotation = object.transform.rotation;
     }
     public reset() {
-
         for (const object of this.gameObject) {
-            const original = this.originalPos.get(object);
-            if (original) {
-                object.transform.position = new Vector2(original[0].x, original[0].y);
-                object.transform.scale = new Vector2(original[1].x, original[1].y);
-            }
-            if ('reset' in object && typeof object.reset === 'function') {
-                (object as any).reset();
-            }
+            object.reset();
         }
     }
 
@@ -53,6 +48,9 @@ class Scene implements IScene{
         Renderer.flip();
         for (var object of this.gameObject) {
             object.render(delta, this.camera.transform.position);
+        }
+        if (SceneManager.pausing) {
+            Renderer.pause();
         }
     }    
 }
