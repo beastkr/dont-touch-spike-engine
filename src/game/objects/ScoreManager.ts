@@ -1,4 +1,4 @@
-import Text from "../../components/ui-components/Text";
+import Text from "../../core/components/ui-components/Text";
 class ScoreManager {
     static score: number = 0;
     static highscore: number = 0;

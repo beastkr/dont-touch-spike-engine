@@ -1,16 +1,16 @@
-import Scene from "../game-engine/Scene";
-import Camera from "../graphics/Camera";
-import Renderer from "../graphics/Renderer";
-import Button from "../components/ui-components/Button";
-import Cursor from "../components/ui-components/Cursor";
-import Vector2 from "../components/Vector2";
-import ColliderController from "../components/Collider/ColliderController";
-import SceneManager from "../game-engine/SceneManager";
-import GameObject from "../game-objects/GameObject";
-import SpriteRenderer from "../graphics/SpriteRenderer";
+import Scene from "../core/game-engine/Scene";
+import Camera from "../core/graphics/Camera";
+import Renderer from "../core/graphics/Renderer";
+import Button from "../core/components/ui-components/Button";
+import Cursor from "../core/components/ui-components/Cursor";
+import Vector2 from "../core/components/Vector2";
+import ColliderController from "../core/components/Collider/ColliderController";
+import SceneManager from "../core/game-engine/SceneManager";
+import GameObject from "../core/game-objects/GameObject";
+import SpriteRenderer from "../core/graphics/SpriteRenderer";
 import { BACKGROUND_IMAGE } from "../constants/global";
 import ScoreManager from "./objects/ScoreManager";
-import Text from "../components/ui-components/Text";
+import Text from "../core/components/ui-components/Text";
 class MenuScene extends Scene {
     constructor() {
 

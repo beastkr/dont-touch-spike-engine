@@ -1,4 +1,3 @@
-
 type Color = [number, number, number, number];
 
 
@@ -19,11 +18,11 @@ interface ISceneManager {
 interface IScene {
     name: string;
     camera: ICamera;
-    originalPos: Map<IGameObject, [IVector2, IVector2]>;
     gameObject: IGameObject[];
     update(delta:number): void;
     render(delta: number): void;
     reset(): void;
+    entry(): void;
 }
 
 interface ITime {
@@ -54,6 +53,7 @@ interface ITransform extends IComponent{
     rotation: number;
     scale: IVector2;
     flip: IVector2;
+    update(delta: number);
 }
 interface IVector2 extends IComponent{
     x: number;
@@ -97,3 +97,5 @@ interface IAnimator extends IComponent {
 }
 
 interface IButton extends IGameObject {}
+
+interface IRigidBody extends ITransform {}

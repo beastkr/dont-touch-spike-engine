@@ -1,7 +1,7 @@
 import Component from '../components/Component';
 import ResourceManager from '../ResourceManager';
 import Vector2 from '../components/Vector2';
-import { CAMERA_SCALE } from '../constants/graphic';
+import { CAMERA_SCALE } from '../../constants/graphic';
 
 class SpriteRenderer extends Component implements ISpriteRenderder{
     public color: Color;

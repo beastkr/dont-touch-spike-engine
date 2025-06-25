@@ -1,4 +1,4 @@
-import Spike from "../game/objects/Spike";
+import Spike from "../../game/objects/Spike";
 import Tile from "./Tile";
 
 class SpikeTile extends Tile {

@@ -1,4 +1,4 @@
-import GameObject from "../game-objects/GameObject";
+import GameObject from "./GameObject";
 import Physics from "../physics/Physics";
 import CollidableObject from "./CollidableObject";
 import Force from "../physics/Force";

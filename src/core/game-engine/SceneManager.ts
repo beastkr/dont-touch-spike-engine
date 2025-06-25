@@ -1,9 +1,9 @@
 import ColliderController from "../components/Collider/ColliderController";
 import Scene from "./Scene";
 import Renderer from "../graphics/Renderer";
-import MenuScene from "../game/MenuScene";
-import LoadingScene from "../game/LoadingScene";
-import GameScene from "../game/GameScene";
+import MenuScene from "../../game/MenuScene";
+import LoadingScene from "../../game/LoadingScene";
+import GameScene from "../../game/GameScene";
 import InputManager from "../InputManager";
 
     class SceneManager {
@@ -36,6 +36,7 @@ import InputManager from "../InputManager";
                 ColliderController.reset(key);
                 SceneManager.getCurrentScene().reset();
                 SceneManager.activeScene = key;
+                SceneManager.getCurrentScene().entry();
                 let camera = SceneManager.sceneList.get(key)?.camera;
                 if (camera) {
                     Renderer.initialize(camera);

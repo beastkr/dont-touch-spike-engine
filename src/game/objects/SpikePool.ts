@@ -1,79 +1,10 @@
 import Spike from './Spike'
-import GameObject from '../../game-objects/GameObject';
-import Vector2 from '../../components/Vector2';
+import GameObject from '../../core/game-objects/GameObject';
+import Vector2 from '../../core/components/Vector2';
 import PlayerDTTS from './PlayerDTTS';
-import { getRandom } from '../../math/Random';
+import { getRandom } from '../../core/math/Random';
 
 class SpikePool extends GameObject {
-    private spikelist: Spike[];
-    private player: PlayerDTTS;
-    private marginPos: number;
-    private isLeft: boolean = false;    
-
-    public constructor(sceneKey: string, size: number, direction: number, marginPos: number) {
-        
-        super(sceneKey);
-        if (direction == 90) this.isLeft = true;
-        this.marginPos = marginPos;
-        this.spikelist = []
-        for (let i = 0; i < size; i++) {
-            let spike = new Spike(sceneKey ,new Vector2(-100, -100), new Vector2(50,50));
-            spike.transform.rotation = direction;
-            this.spikelist.push(spike);
-        }
-    } 
-
-    public hide() {
-        for (let spike of this.spikelist) {
-            if (this.player.facingLeft == this.isLeft) spike.transform.position = new Vector2(-100, -100);
-        }
-    }
-
-public expose() {
-    const offset = this.isLeft ? 15 : -15;
-
-    // If player is already facing this side, hide instead
-    if (this.player.facingLeft === this.isLeft) {
-        this.hide();
-        return;
-    }
-    
-    for (const spike of this.spikelist) {
-        let r: number;
-
-        r = this.getRandom(50, 500);
-        spike.transform.position = new Vector2(this.marginPos + offset, r);
-    }
-}
-
-    public update(delta: number) {
-        for (let spike of this.spikelist) {
-            spike.update(delta);
-        }
-    }
-
-    public render(delta: number, campos: Vector2) {
-        for (let spike of this.spikelist) {
-            spike.render(delta, campos);
-            const canvas = document.querySelector('canvas')!;
-            const ctx = canvas.getContext('2d');
-        }
-    }
-    
-    public setplayer(player: PlayerDTTS) {
-        this.player = player;
-    }
-
-    public reset() {
-        for (let spike of this.spikelist) {
-            spike.transform.position = new Vector2(-100, -100);
-        }        
-    }
-    
-    public getRandom(min: number, max: number) {
-        return getRandom(min,max);
-        
-    }
 
 }
 

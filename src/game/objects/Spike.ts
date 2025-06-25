@@ -1,6 +1,6 @@
 import { PLAYER_SPRITE, SPIKE_UP } from "../../constants/global";
-import CollidableObject from "../../game-objects/CollidableObject";
-import SpriteRenderer from "../../graphics/SpriteRenderer";
+import CollidableObject from "../../core/game-objects/CollidableObject";
+import SpriteRenderer from "../../core/graphics/SpriteRenderer";
 
 class Spike extends CollidableObject {
     public constructor(sceneKey: string, pos?: IVector2, scale?: IVector2) {

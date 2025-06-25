@@ -1,12 +1,12 @@
-import AnimatedGameObject from "../../game-objects/AnimatedGameObject";
-import SpriteRenderer from "../../graphics/SpriteRenderer";
-import Animator from "../../graphics/Animator";
+import AnimatedGameObject from "../../core/game-objects/AnimatedGameObject";
+import SpriteRenderer from "../../core/graphics/SpriteRenderer";
+import Animator from "../../core/graphics/Animator";
 import { BIRD_SPRITE } from "../../constants/global";
-import Physics from "../../physics/Physics";
-import Force from "../../physics/Force";
-import Vector2 from "../../components/Vector2";
+import Physics from "../../core/physics/Physics";
+import Force from "../../core/physics/Force";
+import Vector2 from "../../core/components/Vector2";
 import { CAMERA_POSITION, CAMERA_SCALE } from "../../constants/graphic";
-import { getRandom } from "../../math/Random";
+import { getRandom } from "../../core/math/Random";
 
 class StupidBird extends AnimatedGameObject {
     private speed:number;
@@ -22,7 +22,6 @@ class StupidBird extends AnimatedGameObject {
     public update(delta:number) {
         super.update(delta);
         this.animator.play(delta);
-        Physics.addforce(this.transform.position, new Force(new Vector2(this.speed,0)),delta)
         if (this.transform.position.x > CAMERA_SCALE.x+100 || this.transform.position.x < -100){
             this.speed = - this.speed;
 

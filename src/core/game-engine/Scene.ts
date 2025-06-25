@@ -7,7 +7,7 @@ import ResourceManager from "../ResourceManager";
 import Cursor from "../components/ui-components/Cursor";
 import Renderer from "../graphics/Renderer";
 import GameObject from "../game-objects/GameObject";
-import { CAMERA_POSITION } from "../constants/graphic";
+import { CAMERA_POSITION } from "../../constants/graphic";
 import Transform from "../components/Transform";
 import SceneManager from "./SceneManager";
 
@@ -15,10 +15,8 @@ class Scene implements IScene{
     public name: string;
     public gameObject: IGameObject[];
     public camera: ICamera;
-    public originalPos: Map<GameObject, [IVector2, IVector2]>
 
     public constructor(string?: string) {
-        this.originalPos = new Map<GameObject, [IVector2, IVector2]>();
         this.name = string ? string : 'default';
         this.gameObject = [];
         this.camera = new Camera(this.name, CAMERA_POSITION);
@@ -53,5 +51,8 @@ class Scene implements IScene{
             Renderer.pause();
         }
     }    
+
+    public entry() {
+    }
 }
 export default Scene;

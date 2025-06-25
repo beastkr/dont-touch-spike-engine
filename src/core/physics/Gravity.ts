@@ -1,6 +1,6 @@
 import Force from './Force'
 import Vector2 from '../components/Vector2';
-import { GRAVITY } from '../constants/physicconfig';
+import { GRAVITY } from '../../constants/physicconfig';
 class Gravity extends Force {
     constructor() {
         super();
