@@ -1,4 +1,4 @@
-import { BUTTON_SPRITE } from "../constants/global";
+import { BUTTON_SPRITE } from "../../constants/global";
 import CollidableObject from "../game-objects/CollidableObject";
 import SpriteRenderer from "../graphics/SpriteRenderer";
 

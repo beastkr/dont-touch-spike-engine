@@ -1,4 +1,4 @@
-import { JUMP_SOUND } from "../constants/sfx";
+import { JUMP_SOUND } from "../../constants/sfx";
 import AudioChannel from "./AudioChannel";
 
 class AudioPlayer {

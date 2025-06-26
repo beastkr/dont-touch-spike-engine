@@ -1,48 +1,85 @@
-import Vector2 from "../components/Vector2";
-import Scene from "../game-engine/Scene";
-import CollidableObject from "../game-objects/CollidableObject";
-import SpriteRenderer from "../graphics/SpriteRenderer";
+import Vector2 from "../core/components/Vector2";
+import Scene from "../core/game-engine/Scene";
+import CollidableObject from "../core/game-objects/CollidableObject";
+import SpriteRenderer from "../core/graphics/SpriteRenderer";
 import PlayerDTTS from "./objects/PlayerDTTS";
-import { BACKGROUND_IMAGE, PLAYER_SPRITE } from "../constants/global";
+import { PLAYER_SPRITE, BACKGROUND_IMAGE, SPIKE_UP, BIRD_SPRITE } from "../constants/global";
 import SpikePool from "./objects/SpikePool";
-import GameObject from "../game-objects/GameObject";
-import ScoreManager from "./objects/ScoreManager";
-import Text from "../components/ui-components/Text";
-import AudioChannel from "../Audio/AudioChannel";
-import { JUMP_SOUND } from "../constants/sfx";
-import TileMap from "../tile/TileMap";
+import TileMap from "../core/tile/TileMap";
+import SceneManager from "../core/game-engine/SceneManager";
+import Text from "../core/components/ui-components/Text";
 import StupidBird from "./objects/StupidBird";
+import GameObject from "../core/game-objects/GameObject";
+import ScoreManager from "./objects/ScoreManager";
+
 class GameScene extends Scene {
+    public player: PlayerDTTS;
+    public spikePool: SpikePool;
+    public score: number;
+    private scoreText: Text;
+    
     constructor() {
         super('game');
+        this.preloadimg = [PLAYER_SPRITE, BACKGROUND_IMAGE, SPIKE_UP, BIRD_SPRITE];
+    }
+    public create() {
+        this.created = true;
+        this.score = 0;
+        this.addBG();
+        this.addScoreText();
+        this.player = new PlayerDTTS(this.name, new Vector2(100,100), new Vector2(30,30));
+        this.spikePool = new SpikePool(this.name, 1);
+        this.addWall();
+        this.addFloor();
+    }
 
+    public entry() {
+        this.player.entry();
+        this.spikePool.entry();
+        this.score = 0;
+    }
 
-        let jumpAudio = new AudioChannel(this.name, JUMP_SOUND, 'jump');
-        this.pushGameObject(jumpAudio);
-
-        let bg = new GameObject(this.name, new Vector2(200,350), new Vector2(400,700));
-        bg.spriterenderer = new SpriteRenderer(BACKGROUND_IMAGE);
-        this.pushGameObject(bg);
-        for (let i = 0; i<3; i++) {
-            this.pushGameObject(new StupidBird(this.name,50 ,new Vector2(300,300), new Vector2(50,50)));  
+    public override update(delta: number) {
+        if (!this.created) return;
+        super.update(delta);
+        this.player.update(delta);
+        this.spikePool.update(delta);
+        this.scoreText.text[0] = String(this.score);
+        if (this.player.dead) {
+            this.GameOver();
         }
-        for (let i = 0; i<3; i++) {
-            this.pushGameObject(new StupidBird(this.name,100 ,new Vector2(100,100), new Vector2(100,100)));
+        if (this.player.touchWall) {
+            this.increase();
         }
 
 
-        let tile = new TileMap(this.name, [[0,0,0,0,0,0,0,0,0]], new Vector2(50,50), new Vector2(0,550-50));
-        this.pushGameObject(tile);
-        
-        let tile2 = new TileMap(this.name, [[0,0,0,0,0,0,0,0,0]], new Vector2(50,50), new Vector2(0,0));
-        tile2.transform.rotation = 180;
-        this.pushGameObject(tile2)
+        if (SceneManager.pausing) return;
+    }
+    private GameOver() {
+        ScoreManager.setScore(this.score);     
+        SceneManager.setActive('menu');
+    }
 
-        let format = [String(ScoreManager.score), '100px Arieal', 'white'];
-        let scoreText = new Text(this.name, new Vector2(200,200), new Vector2(200,100), format);
-        ScoreManager.text = scoreText;
-        this.pushGameObject(scoreText);
+    public override reset() {
+        super.reset();
+        this.spikePool.reset();
+        this.player.reset();
+   }
 
+    private increase() {
+        if (this.score%10==5 && this.spikePool.length()) {
+            this.spikePool.addSpike(this.name, 1);
+        }
+        this.spikePool.show();
+        this.score++;
+        if (this.score>ScoreManager.highscore) {
+            ScoreManager.setHighScore(this.score);
+        }
+
+    }
+
+
+    private addWall() {
         let wall = new CollidableObject(this.name, new Vector2(0, 350), new Vector2(5, 700));
         wall.spriterenderer = new SpriteRenderer(PLAYER_SPRITE);
         wall.collider.layer = 'wall';
@@ -51,26 +88,52 @@ class GameScene extends Scene {
         wall = new CollidableObject(this.name, new Vector2(400, 350), new Vector2(5, 700));
         wall.spriterenderer = new SpriteRenderer(PLAYER_SPRITE);
         wall.collider.layer = 'wall';
-        this.pushGameObject(wall);    
+        this.pushGameObject(wall);   
 
-        let player = new PlayerDTTS(this.name, new Vector2(200, 200), new Vector2(30, 30));
-        let spike = new SpikePool(this.name, 6, 90, 0);
-        let spike2 = new SpikePool(this.name, 6, 270, 400);
-
-        player.spikeLeft = spike;
-        player.spikeright = spike2;
-        spike2.setplayer(player);
-        spike.setplayer(player);
-        this.pushGameObject(spike);
-        this.pushGameObject(spike2);
-        this.pushGameObject(player);
+ 
     }
 
-    public override reset() {
-        super.reset();
-
-        ScoreManager.reset();
+    public addFloor() {
+        let tile = new TileMap(this.name, [[0,0,0,0,0,0,0,0,0]], new Vector2(50,50), new Vector2(0,520));
+        this.pushGameObject(tile);
         
+        let tile2 = new TileMap(this.name, [[0,0,0,0,0,0,0,0,0]], new Vector2(50,50), new Vector2(0, -20));
+        tile2.transform.rotation = 180;
+        this.pushGameObject(tile2) 
+    }
+
+    public override render(delta: number): void {
+        if (!this.created) return;
+        super.render(delta);
+        let camPos = this.camera.transform.position;
+        this.scoreText.render(delta, camPos)
+        this.player.render(delta, camPos);
+        this.spikePool.render(delta, camPos);
+        this.pause();
+
+    }
+
+    private addScoreText() {
+        let format = [String(this.score), '100px Arieal', 'white'];
+        this.scoreText = new Text(this.name, new Vector2(200,200), new Vector2(200,100), format);
+    }
+    
+    private addBG(){
+
+        let bg = new GameObject(this.name, new Vector2(200,350), new Vector2(400,700));
+        bg.spriterenderer = new SpriteRenderer(BACKGROUND_IMAGE);
+        this.pushGameObject(bg);
+        this.addBird(2,50,50);
+        this.addBird(1,100,100);
+
+
+
+    }
+
+    private addBird(n: number, size: number, speed: number) {
+        for (let i = 0; i<n; i++) {
+            this.pushGameObject(new StupidBird(this.name, speed ,new Vector2(100,100), new Vector2(size,size)));
+        }
     }
 
 

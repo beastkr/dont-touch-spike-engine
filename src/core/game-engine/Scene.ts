@@ -7,24 +7,29 @@ import ResourceManager from "../ResourceManager";
 import Cursor from "../components/ui-components/Cursor";
 import Renderer from "../graphics/Renderer";
 import GameObject from "../game-objects/GameObject";
-import { CAMERA_POSITION } from "../constants/graphic";
+import { CAMERA_POSITION } from "../../constants/graphic";
 import Transform from "../components/Transform";
 import SceneManager from "./SceneManager";
+
 
 class Scene implements IScene{
     public name: string;
     public gameObject: IGameObject[];
     public camera: ICamera;
-    public originalPos: Map<GameObject, [IVector2, IVector2]>
+    public preloadimg: string[] = [];
+    public preloadsfx: string[]= [];
 
+    public created: boolean= false;
     public constructor(string?: string) {
-        this.originalPos = new Map<GameObject, [IVector2, IVector2]>();
         this.name = string ? string : 'default';
         this.gameObject = [];
         this.camera = new Camera(this.name, CAMERA_POSITION);
         if (!Renderer.canvas) {Renderer.initialize(this.camera);}
     }
 
+    public create() {
+        this.created = true;
+    }
     public pushGameObject(object: IGameObject) {
         this.gameObject.push(object);
         let t = new Vector2(object.transform.position.x, object.transform.position.y);
@@ -49,9 +54,14 @@ class Scene implements IScene{
         for (var object of this.gameObject) {
             object.render(delta, this.camera.transform.position);
         }
+    }    
+    public pause() {
         if (SceneManager.pausing) {
             Renderer.pause();
         }
-    }    
+    }
+
+    public entry() {
+    }
 }
 export default Scene;

@@ -1,3 +1,4 @@
+import Force from "../physics/Force";
 import Component from "./Component";
 import Vector2 from "./Vector2";
 class Transform extends Component implements ITransform {
@@ -12,5 +13,6 @@ class Transform extends Component implements ITransform {
         this.position = pos ?? new Vector2(0,0);  
         this.scale = scale ?? new Vector2(1,1);
     }
+    public update(delta: number){}
 }
 export default Transform;

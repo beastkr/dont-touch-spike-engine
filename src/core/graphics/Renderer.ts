@@ -1,6 +1,6 @@
 import Text from "../components/ui-components/Text";
 import Vector2 from "../components/Vector2";
-import { CAMERA_SCALE } from "../constants/graphic";
+import { CAMERA_SCALE } from "../../constants/graphic";
 import SceneManager from "../game-engine/SceneManager";
 
 class Renderer{

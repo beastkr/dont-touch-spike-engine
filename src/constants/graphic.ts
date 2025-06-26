@@ -1,4 +1,4 @@
-import Vector2 from "../components/Vector2";
+import Vector2 from "../core/components/Vector2";
 
 const CAMERA_SCALE_X = 400;
 const CAMERA_SCALE_Y = 550;

@@ -1,80 +1,98 @@
 import Spike from './Spike'
-import GameObject from '../../game-objects/GameObject';
-import Vector2 from '../../components/Vector2';
+import GameObject from '../../core/game-objects/GameObject';
+import Vector2 from '../../core/components/Vector2';
 import PlayerDTTS from './PlayerDTTS';
-import { getRandom } from '../../math/Random';
+import { getRandom, getRandom2Range } from '../../core/math/Random';
+import SceneManager from '../../core/game-engine/SceneManager';
 
 class SpikePool extends GameObject {
-    private spikelist: Spike[];
-    private player: PlayerDTTS;
-    private marginPos: number;
-    private isLeft: boolean = false;    
+    public spikeList: Spike[] = [];
+    public isLeft: boolean = false;
+    private offset: number[] = [10, 390]
 
-    public constructor(sceneKey: string, size: number, direction: number, marginPos: number) {
-        
-        super(sceneKey);
-        if (direction == 90) this.isLeft = true;
-        this.marginPos = marginPos;
-        this.spikelist = []
-        for (let i = 0; i < size; i++) {
-            let spike = new Spike(sceneKey ,new Vector2(-100, -100), new Vector2(50,50));
-            spike.transform.rotation = direction;
-            this.spikelist.push(spike);
+    constructor(sceneKey: string, initsize: number, pos?: IVector2, scale?: IVector2) {
+        super(sceneKey, pos, scale);
+        this.transform.rotation = 90;
+        for (var i=0; i<initsize; i++) {
+            this.spikeList.push(new Spike(sceneKey, pos, new Vector2(50,50)));
         }
-    } 
+    }
+    public length() {
+        return this.spikeList.length;
+    }
+
+    public update(delta: number): void {
+        let v = this.isLeft? 100:-100;
+        for (var s of this.spikeList) {
+            if (s.transform.position.x<this.offset[0] || s.transform.position.x>this.offset[1]){
+                s.rb.velocity.x = v;
+            }
+            else {
+                s.rb.velocity.x = 0;
+                s.transform.position.x = this.isLeft? this.offset[0]: this.offset[1];
+            }
+            s.transform.rotation = this.transform.rotation;
+            s.update(delta);
+        } 
+    }
+
+    public show() {
+        this.isLeft = !this.isLeft;
+        this.transform.rotation = this.isLeft ? 90: -90;
+        for (var s of this.spikeList) {
+            s.transform.position.x = this.isLeft ? -20 : 420;
+        }
+        this.RandomizeY();
+    }
+
+    private RandomizeY() {
+        const posList = [0, 0, 0, 0, 0, 0, 0, 0];
+        for (var i = 0; i<Math.min(posList.length-1, this.spikeList.length);i++){
+            posList[i] = 1;
+        }
+        for (var i = 0; i<posList.length; i++) {
+            let n = getRandom(0, posList.length-1);
+            let t = posList[i];
+            posList[i] = posList[n];
+            posList[n] = t;
+        }
+        let iterator = 0;
+        let space = 0;
+        for (var i = 0; i<posList.length; i++) {
+            if (posList[i] == 1) {
+                this.spikeList[iterator].transform.position.y = 125 + i*50;
+                iterator++;
+            }
+        }
+        
+    }
+
+
+    public addSpike(sceneKey: string, n: number) {
+        for (var i=0; i<n; i++) {
+            this.spikeList.push(new Spike(sceneKey, new Vector2(-100,-100), new Vector2(50,50)));
+        }
+    }
 
     public hide() {
-        for (let spike of this.spikelist) {
-            if (this.player.facingLeft == this.isLeft) spike.transform.position = new Vector2(-100, -100);
+        for (var s of this.spikeList) {
+            s.transform.position = new Vector2(-100,-100);
         }
     }
+    public entry() {
+        this.reset();
+    }
 
-public expose() {
-    const offset = this.isLeft ? 15 : -15;
-
-    // If player is already facing this side, hide instead
-    if (this.player.facingLeft === this.isLeft) {
+    public reset(): void {
+        this.isLeft = false;
         this.hide();
-        return;
     }
-    
-    for (const spike of this.spikelist) {
-        let r: number;
 
-        r = this.getRandom(50, 500);
-        spike.transform.position = new Vector2(this.marginPos + offset, r);
-    }
-}
-
-    public update(delta: number) {
-        for (let spike of this.spikelist) {
-            spike.update(delta);
+    public render(delta: number, campos?: IVector2): void {
+        for (var s of this.spikeList){
+            s.render(delta, SceneManager.getCurrentScene().camera.transform.position)
         }
     }
-
-    public render(delta: number, campos: Vector2) {
-        for (let spike of this.spikelist) {
-            spike.render(delta, campos);
-            const canvas = document.querySelector('canvas')!;
-            const ctx = canvas.getContext('2d');
-        }
-    }
-    
-    public setplayer(player: PlayerDTTS) {
-        this.player = player;
-    }
-
-    public reset() {
-        for (let spike of this.spikelist) {
-            spike.transform.position = new Vector2(-100, -100);
-        }        
-    }
-    
-    public getRandom(min: number, max: number) {
-        return getRandom(min,max);
-        
-    }
-
 }
 
 export default SpikePool;
