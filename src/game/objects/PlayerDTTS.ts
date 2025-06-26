@@ -1,4 +1,5 @@
 import { PLAYER_SPRITE } from "../../constants/global";
+import { JUMP_FORCE, PLAYER_SPEED } from "../../constants/physicconfig";
 import Vector2 from "../../core/components/Vector2";
 import Player from "../../core/game-objects/Player";
 import Animator from "../../core/graphics/Animator";
@@ -10,27 +11,37 @@ import RigidBody from "../../core/physics/RigidBody";
 
 class PlayerDTTS extends Player{
     public rb: RigidBody;
-    public jumpForce: Vector2 = new Vector2(0,-1800);
-    public speed: Vector2 = new Vector2(200,0);
+    public speed: Vector2 = new Vector2(PLAYER_SPEED,0);
     private canJump: boolean = true;    
+    private bounced: boolean = false;
     public touchGround: boolean = false;
     public bouncable: boolean = false;
     public dead: boolean = false;
+    public touchWall: boolean = false;
 
     constructor(sceneKey: string, pos?: IVector2, scale?: IVector2) {
         super(sceneKey, pos, scale);
         this.rb = new RigidBody(this.transform.position, this.transform.scale);
         this.setUpAnimator();
+        this.collider.scale.y = this.transform.scale.y/2;
     }
 
     public update(delta: number) {
         super.update(delta);
+        this.flagreset();
+        this.checkAllCollider();
+        this.checkBouncing();
+        if (this.touchGround && this.rb.velocity.y>=0) this.rb.velocity.y = 0;
+        else {Physics.addforce(this.rb, Physics.gravity)}
+        this.jump();
+        this.rb.update(delta, this.transform);
+    }
+
+    private checkAllCollider() {
         let coll = this.collider.checkCollide();
-        this.touchGround = false;
-        this.bouncable = false;
         for (var c of coll) {
-            if (c.layer == 'wall' && !this.bouncable){
-                this.bouncable = true;
+            if (c.layer == 'wall') {
+                this.bounced = true;
             }
             if (c.layer == 'ground') {
                 this.touchGround = true;
@@ -39,15 +50,27 @@ class PlayerDTTS extends Player{
                 this.dead = true;
             }
         }
-        if (this.bouncable) this.bounce();
-        if (this.touchGround && this.rb.velocity.y>=0) this.rb.velocity.y = 0;
-        else {Physics.addforce(this.rb, Physics.gravity)}
-
-        this.jump();
-        this.rb.update(delta, this.transform);
-
-
     }
+
+
+    public flagreset() {
+        this.touchWall = false;
+        this.touchGround = false;
+        this.dead = false;
+        this.bounced = false;
+    }
+    
+    private checkBouncing() {
+        let t = this.collider.collide('wall')[1]
+        if (!t){
+            this.bouncable = true;
+        }
+        else {
+            this.bounce();
+            this.bouncable = false;
+        }
+    }
+
     public render(delta: number, campos?: IVector2): void {
         super.render(delta, campos);
         this.animator.play(delta);
@@ -61,17 +84,24 @@ class PlayerDTTS extends Player{
     }
 
     private bounce() {
-        this.rb.velocity.x = -this.rb.velocity.x;
+        if (this.bouncable) {
+            this.rb.velocity.x = -this.rb.velocity.x;
+            this.bouncable = false;
+            this.touchWall = true;
+            this.flip();
+        }
+
     }
 
     private jump() {
-        if (InputManager.key == ' ' && this.canJump) {
+        if ((InputManager.key == ' ' || InputManager.mousepos[2]!=0) && this.canJump) {
             console.log('jump');
-            this.rb.velocity.y = -800;
+            this.rb.velocity.y = -JUMP_FORCE;
             this.canJump = false;
+            InputManager.mousepos[2] =0;
         }
 
-        if (InputManager.key == '' && !this.canJump) {
+        if ((InputManager.key == '' && InputManager.mousepos[2] == 0) && !this.canJump) {
             this.canJump = true;
         }
     }
@@ -79,14 +109,19 @@ class PlayerDTTS extends Player{
 
     public reset(): void {
         super.reset();
-        this.dead = false;
         this.rb.reset();
+        this.flagreset();
     }
 
     public entry(): void {
         Physics.addforce(this.rb, new Force(this.speed));
     }
 
+
+    private flip() {
+        this.transform.flip.x *= -1;
+        this.spriterenderer.flipimage(this.transform.flip)
+    }
 }
 
 export default PlayerDTTS;

@@ -19,10 +19,14 @@ interface IScene {
     name: string;
     camera: ICamera;
     gameObject: IGameObject[];
+    preloadimg: string[];
+    preloadsfx: string[];
+    created: boolean;
     update(delta:number): void;
     render(delta: number): void;
     reset(): void;
     entry(): void;
+    create(): void;
 }
 
 interface ITime {

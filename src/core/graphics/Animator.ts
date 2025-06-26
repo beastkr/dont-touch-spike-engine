@@ -14,13 +14,14 @@ class Animator extends Component implements IAnimator{
     private frameWidth: number = 0;
     private frameHeight: number = 0;
     private numFrames: number = 0;
+    private elapsedTime: number = 0;
 
 
     public constructor(sprite: SpriteRenderer) {
         super();
         this.animation = [];
         this.sprite = sprite;
-        this.interval = 1000/this.fps;
+        this.interval = 1/this.fps;
     }
     public loadAnim(spritesheet: boolean, source: string | string[], frameWidth?: number, frameHeight?: number) {
         this.spritesheet = spritesheet;
@@ -37,17 +38,12 @@ class Animator extends Component implements IAnimator{
 
 
     public play(delta: number) {
-        if (this.fps === 0) return;
-
-        if (this.starttime === 0) {
-            this.starttime = performance.now();
-        }
-
-        let safeholder = Math.floor((performance.now() % 1000) / this.interval);
-        if (safeholder === this.safeprogress) return;
-
-        this.safeprogress = safeholder;
+        if (this.fps == 0) return;
+        this.elapsedTime+=delta;
+        if (this.elapsedTime<this.interval) return;
+        this.elapsedTime = 0;
         this.currentindex = (this.currentindex + 1) % (this.spritesheet ? this.numFrames : this.animation.length);
+        this.currentindex = this.spritesheet? this.currentindex : 0;
 
         if (!this.spritesheet) {
             this.sprite.image.src = this.animation[this.currentindex];

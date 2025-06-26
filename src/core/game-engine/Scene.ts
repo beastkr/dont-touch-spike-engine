@@ -11,11 +11,15 @@ import { CAMERA_POSITION } from "../../constants/graphic";
 import Transform from "../components/Transform";
 import SceneManager from "./SceneManager";
 
+
 class Scene implements IScene{
     public name: string;
     public gameObject: IGameObject[];
     public camera: ICamera;
+    public preloadimg: string[] = [];
+    public preloadsfx: string[]= [];
 
+    public created: boolean= false;
     public constructor(string?: string) {
         this.name = string ? string : 'default';
         this.gameObject = [];
@@ -23,6 +27,9 @@ class Scene implements IScene{
         if (!Renderer.canvas) {Renderer.initialize(this.camera);}
     }
 
+    public create() {
+        this.created = true;
+    }
     public pushGameObject(object: IGameObject) {
         this.gameObject.push(object);
         let t = new Vector2(object.transform.position.x, object.transform.position.y);
@@ -47,10 +54,12 @@ class Scene implements IScene{
         for (var object of this.gameObject) {
             object.render(delta, this.camera.transform.position);
         }
+    }    
+    public pause() {
         if (SceneManager.pausing) {
             Renderer.pause();
         }
-    }    
+    }
 
     public entry() {
     }

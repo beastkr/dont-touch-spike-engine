@@ -18,7 +18,7 @@ class RigidBody {
     public onAddForce(f: Force) {
         this.velocity.y += f.power.y/this.mass;
         this.velocity.x += f.power.x/this.mass;
-        if(this.velocity.y>=1000) this.velocity.y = 1000;
+        if(this.velocity.y>=700) this.velocity.y = 700;
     }
 
     public onStopForce(f: Force) {
@@ -28,6 +28,7 @@ class RigidBody {
     public reset(){
         this.velocity = new Vector2();
     }
+
 
 }
 

@@ -13,8 +13,9 @@ import InputManager from "../InputManager";
         static resumable: boolean = false;
         static initialize() {
             SceneManager.sceneList = new Map<string, IScene>();
+            SceneManager.initScene();
             SceneManager.sceneList.set('loading', new LoadingScene());
-            SceneManager.setActive('loading');
+            SceneManager.setActive('menu');
             
         }
         static initScene(): void{
@@ -31,18 +32,19 @@ import InputManager from "../InputManager";
         }
 
         static setActive(key: string) {
-            InputManager.reset();
-            if (SceneManager.sceneList.has(key)) {
-                ColliderController.reset(key);
-                SceneManager.getCurrentScene().reset();
-                SceneManager.activeScene = key;
-                SceneManager.getCurrentScene().entry();
-                let camera = SceneManager.sceneList.get(key)?.camera;
-                if (camera) {
-                    Renderer.initialize(camera);
-                }
+            if (this.getCurrentScene().name == 'loading' || this.sceneList.get(key)?.created) {
+                this.getCurrentScene().reset();
+                this.activeScene = key;
+                this.getCurrentScene().entry();
+                return;
+            }            
+            this.getCurrentScene().reset();
+            this.activeScene = 'loading';
+            let loading = this.getCurrentScene();
+            if (loading instanceof LoadingScene) {
+                loading.entry(key).then(()=>{
+                })
             }
-
         }
 
         static getCurrentScene(): IScene {
