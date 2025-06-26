@@ -8,6 +8,7 @@ import InputManager from "../../core/InputManager";
 import Force from "../../core/physics/Force";
 import Physics from "../../core/physics/Physics";
 import RigidBody from "../../core/physics/RigidBody";
+import Particle from "./Particle";
 
 class PlayerDTTS extends Player{
     public rb: RigidBody;
@@ -18,6 +19,7 @@ class PlayerDTTS extends Player{
     public bouncable: boolean = false;
     public dead: boolean = false;
     public touchWall: boolean = false;
+    public jumping: boolean = false;
 
     constructor(sceneKey: string, pos?: IVector2, scale?: IVector2) {
         super(sceneKey, pos, scale);
@@ -35,7 +37,9 @@ class PlayerDTTS extends Player{
         else {Physics.addforce(this.rb, Physics.gravity)}
         this.jump();
         this.rb.update(delta, this.transform);
+
     }
+
 
     private checkAllCollider() {
         let coll = this.collider.checkCollide();
@@ -58,6 +62,7 @@ class PlayerDTTS extends Player{
         this.touchGround = false;
         this.dead = false;
         this.bounced = false;
+        this.jumping = false;
     }
     
     private checkBouncing() {
@@ -72,6 +77,7 @@ class PlayerDTTS extends Player{
     }
 
     public render(delta: number, campos?: IVector2): void {
+
         super.render(delta, campos);
         this.animator.play(delta);
     }
@@ -94,7 +100,7 @@ class PlayerDTTS extends Player{
 
     private jump() {
         if ((InputManager.key == ' ' || InputManager.mousepos[2]!=0) && this.canJump) {
-            console.log('jump');
+            this.jumping = true;
             this.rb.velocity.y = -JUMP_FORCE;
             this.canJump = false;
             InputManager.mousepos[2] =0;

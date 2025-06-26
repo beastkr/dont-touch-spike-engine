@@ -81,5 +81,16 @@ class Renderer{
         t.render(0, SceneManager.getCurrentScene().camera.transform.position);
     }
 
+    static fillBlack() :void{ 
+        const canvas = document.querySelector('canvas')!;
+        const ctx = canvas.getContext('2d');
+        
+        if (ctx) {
+            ctx.imageSmoothingEnabled = false;
+            ctx.fillStyle = 'black';
+            ctx.fillRect(0, 0, Renderer.camera.transform.scale.x, Renderer.camera.transform.scale.y);
+        }
+    }
+
 }
 export default Renderer

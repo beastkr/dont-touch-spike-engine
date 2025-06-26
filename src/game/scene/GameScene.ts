@@ -13,6 +13,7 @@ import GameObject from "../../core/game-objects/GameObject";
 import ScoreManager from "../objects/ScoreManager";
 import { JUMP_SOUND } from "../../constants/sfx";
 import AudioChannel from "../../core/Audio/AudioChannel";
+import Particle from "../objects/Particle";
 
 class GameScene extends Scene {
     public player: PlayerDTTS;
@@ -20,6 +21,7 @@ class GameScene extends Scene {
     public score: number;
     private scoreText: Text;
     private jumpsound: AudioChannel;
+    private particle: Particle;
     
     constructor() {
         super('game');
@@ -34,6 +36,7 @@ class GameScene extends Scene {
         this.addScoreText();
         this.player = new PlayerDTTS(this.name, new Vector2(100,100), new Vector2(30,30));
         this.spikePool = new SpikePool(this.name, 1);
+        this.particle = new Particle(this.name, this.player);
         this.addWall();
         this.addFloor();
     }
@@ -52,6 +55,8 @@ class GameScene extends Scene {
         if (!this.created) return;
         super.update(delta);
         this.player.update(delta);
+        this.particle.update(delta)
+
         this.spikePool.update(delta);
         this.scoreText.text[0] = String(this.score);
         if (this.player.dead) {
@@ -60,7 +65,9 @@ class GameScene extends Scene {
         if (this.player.touchWall) {
             this.increase();
         }
-
+        if (this.player.jumping) {
+            this.particle.emitParticle(this.name, this.player, 0);
+        }
 
         if (SceneManager.pausing) return;
     }
@@ -73,6 +80,7 @@ class GameScene extends Scene {
         super.reset();
         this.spikePool.reset();
         this.player.reset();
+        this.particle.reset();
    }
 
     private increase() {
@@ -87,6 +95,7 @@ class GameScene extends Scene {
         }
 
     }
+
 
 
     private addWall() {
@@ -116,7 +125,8 @@ class GameScene extends Scene {
         if (!this.created) return;
         super.render(delta);
         let camPos = this.camera.transform.position;
-        this.scoreText.render(delta, camPos)
+        this.scoreText.render(delta, camPos);
+        this.particle.render(delta, camPos);
         this.player.render(delta, camPos);
         this.spikePool.render(delta, camPos);
         this.pause();
