@@ -1,18 +1,18 @@
-import Vector2 from "../core/components/Vector2";
-import Scene from "../core/game-engine/Scene";
-import CollidableObject from "../core/game-objects/CollidableObject";
-import SpriteRenderer from "../core/graphics/SpriteRenderer";
-import PlayerDTTS from "./objects/PlayerDTTS";
-import { PLAYER_SPRITE, BACKGROUND_IMAGE, SPIKE_UP, BIRD_SPRITE } from "../constants/global";
-import SpikePool from "./objects/SpikePool";
-import TileMap from "../core/tile/TileMap";
-import SceneManager from "../core/game-engine/SceneManager";
-import Text from "../core/components/ui-components/Text";
-import StupidBird from "./objects/StupidBird";
-import GameObject from "../core/game-objects/GameObject";
-import ScoreManager from "./objects/ScoreManager";
-import { JUMP_SOUND } from "../constants/sfx";
-import AudioChannel from "../core/Audio/AudioChannel";
+import Vector2 from "../../../core/components/Vector2";
+import Scene from "../../../core/game-engine/Scene";
+import CollidableObject from "../../../core/game-objects/CollidableObject";
+import SpriteRenderer from "../../../core/graphics/SpriteRenderer";
+import PlayerDTTS from "../PlayerDTTS";
+import { PLAYER_SPRITE, BACKGROUND_IMAGE, SPIKE_UP, BIRD_SPRITE } from "../../../constants/global";
+import SpikePool from "../SpikePool";
+import TileMap from "../../../core/tile/TileMap";
+import SceneManager from "../../../core/game-engine/SceneManager";
+import Text from "../../../core/components/ui-components/Text";
+import StupidBird from "../StupidBird";
+import GameObject from "../../../core/game-objects/GameObject";
+import ScoreManager from "../ScoreManager";
+import { JUMP_SOUND } from "../../../constants/sfx";
+import AudioChannel from "../../../core/Audio/AudioChannel";
 
 class GameScene extends Scene {
     public player: PlayerDTTS;

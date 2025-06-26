@@ -1,15 +1,15 @@
-import Scene from "../core/game-engine/Scene";
-import ResourceManager from "../core/ResourceManager";
-import * as PATH from '../constants/global'
-import * as SFX_PATH from '../constants/sfx'
-import SceneManager from "../core/game-engine/SceneManager";
-import AudioPlayer from "../core/Audio/AudioPlayer";
-import ScoreManager from "./objects/ScoreManager";
-import TileSet from "../core/tile/TileSet";
-import GameObject from "../core/game-objects/GameObject";
-import AnimatedGameObject from "../core/game-objects/AnimatedGameObject";
-import Vector2 from "../core/components/Vector2";
-import Text from "../core/components/ui-components/Text";
+import Scene from "../../../core/game-engine/Scene";
+import ResourceManager from "../../../core/ResourceManager";
+import * as PATH from '../../../constants/global'
+import * as SFX_PATH from '../../../constants/sfx'
+import SceneManager from "../../../core/game-engine/SceneManager";
+import AudioPlayer from "../../../core/Audio/AudioPlayer";
+import ScoreManager from "../ScoreManager";
+import TileSet from "../../../core/tile/TileSet";
+import GameObject from "../../../core/game-objects/GameObject";
+import AnimatedGameObject from "../../../core/game-objects/AnimatedGameObject";
+import Vector2 from "../../../core/components/Vector2";
+import Text from "../../../core/components/ui-components/Text";
 
 class LoadingScene extends Scene {
     private resources: string[];
