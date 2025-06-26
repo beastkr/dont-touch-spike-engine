@@ -1,6 +1,7 @@
 import GameObject from "./GameObject";
 import BoxCollider from "../components/Collider/BoxCollider";
 import Renderer from "../graphics/Renderer";
+import SceneManager from "../game-engine/SceneManager";
 class CollidableObject extends GameObject implements ICollidableGameObject {
     public collider: ICollider;
     public layer: string = 'default';
@@ -16,6 +17,7 @@ class CollidableObject extends GameObject implements ICollidableGameObject {
     }
     public override render(delta: number, campos?: IVector2): void {
         super.render(delta, campos);
+       //this.collider.drawDebug(this.spriterenderer.ctx);
     }
 }
 

@@ -11,19 +11,24 @@ import Text from "../core/components/ui-components/Text";
 import StupidBird from "./objects/StupidBird";
 import GameObject from "../core/game-objects/GameObject";
 import ScoreManager from "./objects/ScoreManager";
+import { JUMP_SOUND } from "../constants/sfx";
+import AudioChannel from "../core/Audio/AudioChannel";
 
 class GameScene extends Scene {
     public player: PlayerDTTS;
     public spikePool: SpikePool;
     public score: number;
     private scoreText: Text;
+    private jumpsound: AudioChannel;
     
     constructor() {
         super('game');
         this.preloadimg = [PLAYER_SPRITE, BACKGROUND_IMAGE, SPIKE_UP, BIRD_SPRITE];
+        this.preloadsfx = [JUMP_SOUND]
     }
     public create() {
         this.created = true;
+        this.createAudioChannel();
         this.score = 0;
         this.addBG();
         this.addScoreText();
@@ -31,6 +36,10 @@ class GameScene extends Scene {
         this.spikePool = new SpikePool(this.name, 1);
         this.addWall();
         this.addFloor();
+    }
+
+    private createAudioChannel() {
+        this.jumpsound = new AudioChannel(this.name, JUMP_SOUND, 'jump')
     }
 
     public entry() {
@@ -67,8 +76,9 @@ class GameScene extends Scene {
    }
 
     private increase() {
-        if (this.score%10==5 && this.spikePool.length()) {
-            this.spikePool.addSpike(this.name, 1);
+        this.jumpsound.play();
+        if (this.score%10==5 && this.spikePool.length()<7) {
+            this.spikePool.addSpike(this.name);
         }
         this.spikePool.show();
         this.score++;
