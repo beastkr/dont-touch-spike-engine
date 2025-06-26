@@ -66,10 +66,13 @@ class SpriteRenderer extends Component implements ISpriteRenderder{
         } else {
             if (frameRect) {
                 const [sx, sy, sw, sh] = frameRect;
-
+                ctx.globalAlpha = this.color[3];
                 ctx.drawImage(this.image, sx, sy, sw, sh, flippedX, flippedY, scale.x, scale.y);
+                ctx.globalAlpha = 1;               
             } else {
+                ctx.globalAlpha = this.color[3];
                 ctx.drawImage(this.image, flippedX, flippedY, scale.x, scale.y);
+                ctx.globalAlpha = 1; 
             }
         }
 

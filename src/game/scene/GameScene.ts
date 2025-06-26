@@ -3,7 +3,7 @@ import Scene from "../../core/game-engine/Scene";
 import CollidableObject from "../../core/game-objects/CollidableObject";
 import SpriteRenderer from "../../core/graphics/SpriteRenderer";
 import PlayerDTTS from "../objects/PlayerDTTS";
-import { PLAYER_SPRITE, BACKGROUND_IMAGE, SPIKE_UP, BIRD_SPRITE } from "../../constants/global";
+import { PLAYER_SPRITE, BACKGROUND_IMAGE, SPIKE_UP, BIRD_SPRITE, BUTTON_SPRITE } from "../../constants/global";
 import SpikePool from "../objects/SpikePool";
 import TileMap from "../../core/tile/TileMap";
 import SceneManager from "../../core/game-engine/SceneManager";
@@ -14,6 +14,7 @@ import ScoreManager from "../objects/ScoreManager";
 import { JUMP_SOUND } from "../../constants/sfx";
 import AudioChannel from "../../core/Audio/AudioChannel";
 import Particle from "../objects/Particle";
+import Time from "../../core/Time/Time";
 
 class GameScene extends Scene {
     public player: PlayerDTTS;
@@ -25,7 +26,7 @@ class GameScene extends Scene {
     
     constructor() {
         super('game');
-        this.preloadimg = [PLAYER_SPRITE, BACKGROUND_IMAGE, SPIKE_UP, BIRD_SPRITE];
+        this.preloadimg = [PLAYER_SPRITE, BACKGROUND_IMAGE, SPIKE_UP, BIRD_SPRITE, BUTTON_SPRITE];
         this.preloadsfx = [JUMP_SOUND]
     }
     public create() {
@@ -68,9 +69,10 @@ class GameScene extends Scene {
         if (this.player.jumping) {
             this.particle.emitParticle(this.name, this.player, 0);
         }
-
         if (SceneManager.pausing) return;
     }
+
+
     private GameOver() {
         ScoreManager.setScore(this.score);     
         SceneManager.setActive('menu');
@@ -101,12 +103,12 @@ class GameScene extends Scene {
 
     private addWall() {
         let wall = new CollidableObject(this.name, new Vector2(0, 350), new Vector2(5, 700));
-        wall.spriterenderer = new SpriteRenderer(PLAYER_SPRITE);
+        wall.spriterenderer = new SpriteRenderer(BUTTON_SPRITE);
         wall.collider.layer = 'wall';
         this.pushGameObject(wall);
 
         wall = new CollidableObject(this.name, new Vector2(400, 350), new Vector2(5, 700));
-        wall.spriterenderer = new SpriteRenderer(PLAYER_SPRITE);
+        wall.spriterenderer = new SpriteRenderer(BUTTON_SPRITE);
         wall.collider.layer = 'wall';
         this.pushGameObject(wall);   
 

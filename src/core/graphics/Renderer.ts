@@ -91,6 +91,18 @@ class Renderer{
             ctx.fillRect(0, 0, Renderer.camera.transform.scale.x, Renderer.camera.transform.scale.y);
         }
     }
+    static fill(color: string, opacity: number) {
+        const canvas = document.querySelector('canvas')!;
+        const ctx = canvas.getContext('2d');
+        
+        if (ctx) {
+            ctx.globalAlpha = opacity;
+            ctx.imageSmoothingEnabled = false;
+            ctx.fillStyle = color;
+            ctx.fillRect(0, 0, Renderer.camera.transform.scale.x, Renderer.camera.transform.scale.y);
+            ctx.globalAlpha = 1;
+        }        
+    }
 
 }
 export default Renderer

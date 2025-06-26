@@ -41,7 +41,7 @@ class Particle extends GameObject{
 
 
     public emitParticle(sceneKey: string, player: PlayerDTTS, time: number){
-        if (this.progress<=2) {
+        if (this.progress<=3) {
             this.emitting = true;
             this.progress = 0;
         }

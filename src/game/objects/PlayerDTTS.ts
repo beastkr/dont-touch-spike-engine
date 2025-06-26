@@ -20,6 +20,7 @@ class PlayerDTTS extends Player{
     public dead: boolean = false;
     public touchWall: boolean = false;
     public jumping: boolean = false;
+    public active: boolean = true;
 
     constructor(sceneKey: string, pos?: IVector2, scale?: IVector2) {
         super(sceneKey, pos, scale);
@@ -29,17 +30,26 @@ class PlayerDTTS extends Player{
     }
 
     public update(delta: number) {
-        super.update(delta);
-        this.flagreset();
-        this.checkAllCollider();
-        this.checkBouncing();
-        if (this.touchGround && this.rb.velocity.y>=0) this.rb.velocity.y = 0;
-        else {Physics.addforce(this.rb, Physics.gravity)}
-        this.jump();
-        this.rb.update(delta, this.transform);
+        if (this.active){
+            super.update(delta);
+            this.flagreset();
+            this.checkAllCollider();
+            this.checkBouncing();
+            if (this.touchGround && this.rb.velocity.y>=0) this.rb.velocity.y = 0;
+            else {Physics.addforce(this.rb, Physics.gravity)}
+            this.jump();
+            this.rb.update(delta, this.transform);
+        }
+
 
     }
 
+    public disable() {
+        this.active = false;
+    }
+    public enable() {
+        this.active = true;
+    }
 
     private checkAllCollider() {
         let coll = this.collider.checkCollide();

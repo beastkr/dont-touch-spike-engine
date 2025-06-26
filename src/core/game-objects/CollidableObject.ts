@@ -18,7 +18,7 @@ class CollidableObject extends GameObject implements ICollidableGameObject {
     }
     public override render(delta: number, campos?: IVector2): void {
         super.render(delta, campos);
-        this.collider.drawDebug(this.spriterenderer.ctx);
+        //this.collider.drawDebug(this.spriterenderer.ctx);
     }
 }
 

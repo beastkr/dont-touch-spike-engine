@@ -82,14 +82,14 @@ class SpikePool extends GameObject {
     public entry() {
         this.hide();
         this.isLeft = false;
-    }
-
-    public reset(): void {
-        this.hide();
         for (var i = 0; i<this.length(); i++) {
             this.spikeList.pop;
         }
         this.spikeList = [this.spikePool[0]]
+    }
+
+    public reset(): void {
+        this.hide();
         this.isLeft = false;
     }
 

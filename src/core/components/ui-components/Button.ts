@@ -15,7 +15,7 @@ class Button extends CollidableObject implements IButton, ICollidableGameObject 
         this.spriterenderer = new SpriteRenderer('button.png');
         this.onclickcallbacks = [];
         this.text = new Text(sceneKey, pos, scale);
-        this.text.text = ['Button', '20px Arieal', 'red'];
+        this.text.text = ['Button', '20px Arieal', 'white'];
         if (pos && scale) {
             this.collider = new BoxCollider(sceneKey, pos, scale);
         }
@@ -27,6 +27,7 @@ class Button extends CollidableObject implements IButton, ICollidableGameObject 
     public override update(delta: number) {
         super.update(delta);
         this.hovered = this.collider.collide('cursor')[1];
+        this.spriterenderer.color[3] = 0.8;
         if (this.hovered) {
             this.onhover();
         }
@@ -65,7 +66,7 @@ class Button extends CollidableObject implements IButton, ICollidableGameObject 
         this.text.text[0] = text;
     }
     private onhover() {
-        
+        this.spriterenderer.color[3] = 1;
     }
 }
 
