@@ -10,14 +10,15 @@ class CollidableObject extends GameObject implements ICollidableGameObject {
         this.collider = new BoxCollider(sceneKey, pos, scale);
     }
     public override update(delta: number): void {
+
+        super.update(delta);
         this.collider.position.x = this.transform.position.x;
         this.collider.position.y = this.transform.position.y;
-        super.update(delta);
 
     }
     public override render(delta: number, campos?: IVector2): void {
         super.render(delta, campos);
-       //this.collider.drawDebug(this.spriterenderer.ctx);
+        this.collider.drawDebug(this.spriterenderer.ctx);
     }
 }
 

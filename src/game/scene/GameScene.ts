@@ -78,8 +78,9 @@ class GameScene extends Scene {
 
     public override reset() {
         super.reset();
-        this.spikePool.reset();
+
         this.player.reset();
+        this.spikePool.reset();
         this.particle.reset();
    }
 

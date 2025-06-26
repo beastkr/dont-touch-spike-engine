@@ -33,8 +33,8 @@ class SpikePool extends GameObject {
                 s.transform.position.x = this.isLeft? this.offset[0]: this.offset[1];
             }
             s.transform.rotation = this.transform.rotation;
-            s.update(delta);
         } 
+        for (var s of this.spikePool) s.update(delta);
     }
 
     public show() {
@@ -76,17 +76,21 @@ class SpikePool extends GameObject {
 
     public hide() {
         for (var s of this.spikePool) {
-            s.transform.position = new Vector2(-100,-100);
+            s.transform.position = new Vector2(200,-100);
         }
     }
     public entry() {
-        this.reset();
+        this.hide();
+        this.isLeft = false;
     }
 
     public reset(): void {
+        this.hide();
+        for (var i = 0; i<this.length(); i++) {
+            this.spikeList.pop;
+        }
         this.spikeList = [this.spikePool[0]]
         this.isLeft = false;
-        this.hide();
     }
 
     public render(delta: number, campos?: IVector2): void {
