@@ -1,9 +1,9 @@
 import ColliderController from "../components/Collider/ColliderController";
 import Scene from "./Scene";
 import Renderer from "../graphics/Renderer";
-import MenuScene from "../../game/objects/scene/MenuScene";
-import LoadingScene from "../../game/objects/scene/LoadingScene";
-import GameScene from "../../game/objects/scene/GameScene";
+import MenuScene from "../../game/scene/MenuScene";
+import LoadingScene from "../../game/scene/LoadingScene";
+import GameScene from "../../game/scene/GameScene";
 import InputManager from "../InputManager";
 
     class SceneManager {
