@@ -74,7 +74,6 @@ class PlayerDTTS extends Player{
     public render(delta: number, campos?: IVector2): void {
         super.render(delta, campos);
         this.animator.play(delta);
-        this.collider.drawDebug(this.spriterenderer.ctx)
     }
 
     private setUpAnimator() {
