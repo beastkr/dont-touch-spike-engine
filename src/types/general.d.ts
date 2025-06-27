@@ -102,4 +102,4 @@ interface IAnimator extends IComponent {
 
 interface IButton extends IGameObject {}
 
-interface IRigidBody extends ITransform {}
+interface IRigidBody {}

@@ -20,8 +20,11 @@ class LoadingScene extends Scene {
 
     private progressbar: Text;
     constructor() {
+
         super('loading');
+
         this.progressbar = new Text(this.name, new Vector2(200,275), new Vector2(), ['sss', '50px Ariel', 'white'])
+    
     }
 
 
@@ -33,7 +36,7 @@ class LoadingScene extends Scene {
         this.resources = preloadimg??[];
         ResourceManager.addtolist(this.resources);
         ResourceManager.loadImages(this.resources).then(() => {
-
+            ResourceManager.loadFont();
             TileSet.initialize();
             TileSet.addToTileSet(PATH.BUTTON_SPRITE);
             this.resources = preloadsfx??[];

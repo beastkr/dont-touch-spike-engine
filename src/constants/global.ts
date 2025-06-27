@@ -4,3 +4,4 @@ export const BUTTON_SPRITE = 'button.png';
 export const SPIKE_UP = 'spikeup.png'
 export const GROUND = 'groundup.png';
 export const BIRD_SPRITE = 'bird.png';
+export const LOGO = 'logo.png'

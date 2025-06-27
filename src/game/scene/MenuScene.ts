@@ -8,7 +8,7 @@ import ColliderController from "../../core/components/Collider/ColliderControlle
 import SceneManager from "../../core/game-engine/SceneManager";
 import GameObject from "../../core/game-objects/GameObject";
 import SpriteRenderer from "../../core/graphics/SpriteRenderer";
-import { BACKGROUND_IMAGE, BUTTON_SPRITE } from "../../constants/global";
+import { BACKGROUND_IMAGE, BUTTON_SPRITE, LOGO } from "../../constants/global";
 import ScoreManager from "../objects/ScoreManager";
 import Text from "../../core/components/ui-components/Text";
 class MenuScene extends Scene {
@@ -16,7 +16,7 @@ class MenuScene extends Scene {
     private prevScoreText: Text;
     constructor() {
         super('menu');
-        this.preloadimg=[BACKGROUND_IMAGE, BUTTON_SPRITE];
+        this.preloadimg=[BACKGROUND_IMAGE, BUTTON_SPRITE, LOGO];
     }
 
     public override update(delta: number): void {
@@ -34,15 +34,15 @@ class MenuScene extends Scene {
     }
 
     public addUI() {
-        let format = ['DON\'T TOUCH\nTHE SPIKE', '30px Times New Roman', 'white'];
-        let gameName = new Text(this.name, new Vector2(200, 100), new Vector2(), format);
+        let gameName = new GameObject(this.name, new Vector2(200,100), new Vector2(380,150));
+        gameName.spriterenderer = new SpriteRenderer(LOGO);
         this.pushGameObject(gameName);
 
         this.addScoreText();
 
         let button = new Button(this.name, new Vector2(200, 400), new Vector2(200, 100));
         button.setText('Start Game');
-        button.text.text[1] = '40px Times New Roman';
+        button.text.text[1] = "15px PressStart";
         button.text.text[2] = 'white'
         button.addonclick(() => {
             SceneManager.setActive('game');
@@ -67,8 +67,8 @@ class MenuScene extends Scene {
         this.prevScoreText.text[0] = "Score: " + String(ScoreManager.score)
     }
     private addScoreText() {
-        this.scoreText = new Text(this.name, new Vector2(200,200), new Vector2(), ['', '30px Ariel', 'white']);
-        this.prevScoreText = new Text(this.name, new Vector2(200,230), new Vector2(), ['', '30px Ariel', 'white']);
+        this.scoreText = new Text(this.name, new Vector2(200,200), new Vector2(), ['', '20px PressStart', 'white']);
+        this.prevScoreText = new Text(this.name, new Vector2(200,230), new Vector2(), ['', '20px PressStart', 'white']);
     }
 
 

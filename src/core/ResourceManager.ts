@@ -5,13 +5,24 @@ class ResourceManager {
     static deploy: boolean = true;
     static KEY: string;
     static initialize() {
-
     }
+
+
+    static loadFont = async () => {
+        const font = new FontFace("PressStart", `url('${ResourceManager.KEY}/assets/fonts/PressStart.ttf')`);
+
+        try {
+            await font.load();
+            (document.fonts as any).add(font);
+        } catch (err) {
+            console.error("Failed to load font", err);
+        }
+    };
     static async loadImages(list: string[]) {
         if (ResourceManager.deploy){
             ResourceManager.KEY='https://beastkr.github.io/dont-touch-spike-engine'
         }
-        else ResourceManager.KEY = '..'       
+        else ResourceManager.KEY = '../..'       
         const loadImage = (src: string): Promise<HTMLImageElement> => {
             return new Promise((resolve, reject) => {
                 const img = new Image();
@@ -64,6 +75,7 @@ class ResourceManager {
     static addtolist(list: string[]) {
         for (var img of list) ResourceManager.imgpathlist.push(img);
     }
+
     
 
 }

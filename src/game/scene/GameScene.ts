@@ -15,6 +15,7 @@ import { JUMP_SOUND } from "../../constants/sfx";
 import AudioChannel from "../../core/Audio/AudioChannel";
 import Particle from "../objects/Particle";
 import Time from "../../core/Time/Time";
+import Renderer from "../../core/graphics/Renderer";
 
 class GameScene extends Scene {
     public player: PlayerDTTS;
@@ -55,6 +56,7 @@ class GameScene extends Scene {
     public override update(delta: number) {
         if (!this.created) return;
         super.update(delta);
+        //if (Renderer.shaking) Renderer.rePosScreen(delta);
         this.player.update(delta);
         this.particle.update(delta)
 
@@ -96,6 +98,8 @@ class GameScene extends Scene {
         if (this.score>ScoreManager.highscore) {
             ScoreManager.setHighScore(this.score);
         }
+        //Renderer.screenShake();
+        
 
     }
 
@@ -137,7 +141,7 @@ class GameScene extends Scene {
     }
 
     private addScoreText() {
-        let format = [String(this.score), '100px Arieal', 'white'];
+        let format = [String(this.score), '100px PressStart', 'white'];
         this.scoreText = new Text(this.name, new Vector2(200,200), new Vector2(200,100), format);
     }
     

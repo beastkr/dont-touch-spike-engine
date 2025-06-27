@@ -1,6 +1,6 @@
 import Text from "../components/ui-components/Text";
 import Vector2 from "../components/Vector2";
-import { CAMERA_SCALE } from "../../constants/graphic";
+import { CAMERA_POSITION, CAMERA_SCALE } from "../../constants/graphic";
 import SceneManager from "../game-engine/SceneManager";
 
 class Renderer{
@@ -8,6 +8,7 @@ class Renderer{
     static camera: ICamera;
     static ratioX: number;
     static ratioY: number;
+    static shaking: boolean =false;
     static initialize(camera: ICamera) {
         Renderer.camera = camera;
         if (!Renderer.canvas) {
@@ -101,8 +102,25 @@ class Renderer{
             ctx.fillStyle = color;
             ctx.fillRect(0, 0, Renderer.camera.transform.scale.x, Renderer.camera.transform.scale.y);
             ctx.globalAlpha = 1;
-        }        
+        } 
+               
     }
+
+    static screenShake() {
+        let camera = SceneManager.getCurrentScene().camera;
+        camera.transform.position = new Vector2(CAMERA_POSITION.x -10, CAMERA_POSITION.y-10);
+        this.shaking = true;
+    }
+
+    static rePosScreen(delta: number) {
+        let camera = SceneManager.getCurrentScene().camera;
+        if (camera.transform.position.x>=CAMERA_POSITION.x) {
+            camera.transform.position = new Vector2(CAMERA_POSITION.x, CAMERA_POSITION.y);
+            this.shaking = false;
+        }
+        camera.transform.position = new Vector2(CAMERA_POSITION.x+10*delta, CAMERA_POSITION.y+10*delta);
+    }
+
 
 }
 export default Renderer

@@ -29,6 +29,7 @@ class Scene implements IScene{
 
     public create() {
         this.created = true;
+        
     }
     public pushGameObject(object: IGameObject) {
         this.gameObject.push(object);

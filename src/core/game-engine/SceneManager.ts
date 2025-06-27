@@ -11,6 +11,7 @@ import InputManager from "../InputManager";
         static sceneList: Map<string, IScene>;
         static pausing: boolean = false;
         static resumable: boolean = false;
+
         static initialize() {
             SceneManager.sceneList = new Map<string, IScene>();
             SceneManager.initScene();
