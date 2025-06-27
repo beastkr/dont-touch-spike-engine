@@ -28,6 +28,7 @@ class LoadingScene extends Scene {
     }
 
 
+
     public async entry(sceneKey?: string) {
         this.doneLoading = false;
         let preloadimg = SceneManager.sceneList.get(sceneKey??'menu')?.preloadimg;
@@ -44,9 +45,8 @@ class LoadingScene extends Scene {
                 AudioPlayer.initialize();
                 if (!SceneManager.sceneList.get(this.nextScene)?.created) {
                     SceneManager.sceneList.get(this.nextScene)?.create();
-                }
+                }            
                 this.doneLoading = true;
-
             }).catch((error)=>{
                 console.error('Error loading resources:', error);
             });            

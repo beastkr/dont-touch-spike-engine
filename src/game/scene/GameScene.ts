@@ -11,12 +11,12 @@ import Text from "../../core/components/ui-components/Text";
 import StupidBird from "../objects/StupidBird";
 import GameObject from "../../core/game-objects/GameObject";
 import ScoreManager from "../objects/ScoreManager";
-import { JUMP_SOUND } from "../../constants/sfx";
+import { BGM, JUMP_SOUND } from "../../constants/sfx";
 import AudioChannel from "../../core/Audio/AudioChannel";
 import Particle from "../objects/Particle";
 import Time from "../../core/Time/Time";
 import Renderer from "../../core/graphics/Renderer";
-
+import AudioPlayer from "../../core/Audio/AudioPlayer";
 class GameScene extends Scene {
     public player: PlayerDTTS;
     public spikePool: SpikePool;
@@ -28,7 +28,7 @@ class GameScene extends Scene {
     constructor() {
         super('game');
         this.preloadimg = [PLAYER_SPRITE, BACKGROUND_IMAGE, SPIKE_UP, BIRD_SPRITE, BUTTON_SPRITE];
-        this.preloadsfx = [JUMP_SOUND]
+        this.preloadsfx = [JUMP_SOUND, BGM]
     }
     public create() {
         this.created = true;
@@ -82,7 +82,6 @@ class GameScene extends Scene {
 
     public override reset() {
         super.reset();
-
         this.player.reset();
         this.spikePool.reset();
         this.particle.reset();

@@ -5,6 +5,7 @@ import MenuScene from "../../game/scene/MenuScene";
 import LoadingScene from "../../game/scene/LoadingScene";
 import GameScene from "../../game/scene/GameScene";
 import InputManager from "../InputManager";
+import AudioPlayer from "../Audio/AudioPlayer";
 
     class SceneManager {
         static activeScene: string;
@@ -17,6 +18,7 @@ import InputManager from "../InputManager";
             SceneManager.initScene();
             SceneManager.sceneList.set('loading', new LoadingScene());
             SceneManager.setActive('menu');
+
             
         }
         static initScene(): void{

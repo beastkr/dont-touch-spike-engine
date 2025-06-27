@@ -20,6 +20,12 @@ module.exports = {
                 loader: 'ts-loader',
             },
         ],
+
+
+    },
+    performance: {
+        maxEntrypointSize: 5000000,
+        maxAssetSize: 5000000
     },
     optimization: {
         splitChunks: {

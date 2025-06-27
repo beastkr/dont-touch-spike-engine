@@ -11,12 +11,15 @@ import SpriteRenderer from "../../core/graphics/SpriteRenderer";
 import { BACKGROUND_IMAGE, BUTTON_SPRITE, LOGO } from "../../constants/global";
 import ScoreManager from "../objects/ScoreManager";
 import Text from "../../core/components/ui-components/Text";
+import { BGM } from "../../constants/sfx";
+import AudioPlayer from "../../core/Audio/AudioPlayer";
 class MenuScene extends Scene {
     private scoreText: Text;
     private prevScoreText: Text;
     constructor() {
         super('menu');
         this.preloadimg=[BACKGROUND_IMAGE, BUTTON_SPRITE, LOGO];
+        this.preloadsfx = [BGM]
     }
 
     public override update(delta: number): void {
@@ -29,7 +32,6 @@ class MenuScene extends Scene {
         bg.spriterenderer = new SpriteRenderer(BACKGROUND_IMAGE);
         this.pushGameObject(bg);
         this.addUI();
-
 
     }
 
@@ -61,6 +63,7 @@ class MenuScene extends Scene {
 
     }
     public entry() {
+        AudioPlayer.play('bgm');
         ScoreManager.initialize();
         let highscore = ScoreManager.highscore;
         this.scoreText.text[0] = "Highscore: "+String(highscore);

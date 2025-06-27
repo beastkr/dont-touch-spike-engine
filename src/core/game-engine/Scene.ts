@@ -10,6 +10,7 @@ import GameObject from "../game-objects/GameObject";
 import { CAMERA_POSITION } from "../../constants/graphic";
 import Transform from "../components/Transform";
 import SceneManager from "./SceneManager";
+import AudioPlayer from "../Audio/AudioPlayer";
 
 
 class Scene implements IScene{
@@ -26,7 +27,6 @@ class Scene implements IScene{
         this.camera = new Camera(this.name, CAMERA_POSITION);
         if (!Renderer.canvas) {Renderer.initialize(this.camera);}
     }
-
     public create() {
         this.created = true;
         
@@ -63,6 +63,7 @@ class Scene implements IScene{
     }
 
     public entry() {
+        
     }
 }
 export default Scene;
