@@ -2,6 +2,7 @@ import Transform from "../../core/components/Transform";
 import Vector2 from "../../core/components/Vector2";
 import GameObject from "../../core/game-objects/GameObject";
 import Time from "../../core/Time/Time";
+import Observer from "./observer/Observer";
 import PlayerDTTS from "./PlayerDTTS";
 
 class Particle extends GameObject{
@@ -17,6 +18,7 @@ class Particle extends GameObject{
         this.list = [];
         this.playerPos = playerPos;
         this.key = sceneKey;
+        Observer.attach('jump', 'emitParticle', ()=>{this.emitParticle(sceneKey, playerPos, 0)})
     }
     public update(delta: number): void {
         this.elapse += delta;

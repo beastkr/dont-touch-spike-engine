@@ -4,6 +4,7 @@ import Vector2 from '../../core/components/Vector2';
 import PlayerDTTS from './PlayerDTTS';
 import { getRandom, getRandom2Range } from '../../core/math/Random';
 import SceneManager from '../../core/game-engine/SceneManager';
+import Observer from './observer/Observer';
 
 class SpikePool extends GameObject {
     public spikeList: Spike[] = [];
@@ -17,6 +18,10 @@ class SpikePool extends GameObject {
         for (var i=0; i<initsize; i++) {
             this.spikeList[i] = (this.spikePool[i]);
         }
+        Observer.attach('touch', 'show', ()=>{this.show();})
+        Observer.attach('spike', 'show', ()=>{
+            this.reset();
+        })
     }
     public length() {
         return this.spikeList.length;

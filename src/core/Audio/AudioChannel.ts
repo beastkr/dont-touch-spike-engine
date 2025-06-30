@@ -23,8 +23,6 @@ class AudioChannel extends GameObject {
                 if (!this.once)
                 this.playing = false;
             })
-            
-
         }
         this.playing = true;
 

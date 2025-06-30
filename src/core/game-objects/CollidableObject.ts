@@ -1,7 +1,5 @@
 import GameObject from "./GameObject";
 import BoxCollider from "../components/Collider/BoxCollider";
-import Renderer from "../graphics/Renderer";
-import SceneManager from "../game-engine/SceneManager";
 class CollidableObject extends GameObject implements ICollidableGameObject {
     public collider: ICollider;
     public layer: string = 'default';

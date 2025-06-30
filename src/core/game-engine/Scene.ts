@@ -63,7 +63,7 @@ class Scene implements IScene{
     }
 
     public entry() {
-        
+
     }
 }
 export default Scene;

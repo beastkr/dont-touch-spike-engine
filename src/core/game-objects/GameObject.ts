@@ -35,5 +35,7 @@ class GameObject implements IGameObject {
         this.spriterenderer.flipimage(this.transform.flip)
         this.transform.rotation = this.originalTransform.rotation;
     }
+
+
 }
 export default GameObject;

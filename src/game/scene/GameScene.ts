@@ -14,9 +14,12 @@ import ScoreManager from "../objects/ScoreManager";
 import { BGM, JUMP_SOUND } from "../../constants/sfx";
 import AudioChannel from "../../core/Audio/AudioChannel";
 import Particle from "../objects/Particle";
-import Time from "../../core/Time/Time";
-import Renderer from "../../core/graphics/Renderer";
 import AudioPlayer from "../../core/Audio/AudioPlayer";
+import Observer from "../objects/observer/Observer";
+import RocketState from "../objects/states/RocketState";
+import PlayingState from "../objects/states/PlayingState";
+
+
 class GameScene extends Scene {
     public player: PlayerDTTS;
     public spikePool: SpikePool;
@@ -29,6 +32,10 @@ class GameScene extends Scene {
         super('game');
         this.preloadimg = [PLAYER_SPRITE, BACKGROUND_IMAGE, SPIKE_UP, BIRD_SPRITE, BUTTON_SPRITE];
         this.preloadsfx = [JUMP_SOUND, BGM]
+        Observer.attach('touch', 'increase', ()=>{this.increase()})
+        Observer.attach('gameover', 'gameover', ()=>{
+            this.GameOver();
+        })
     }
     public create() {
         this.created = true;
@@ -36,7 +43,7 @@ class GameScene extends Scene {
         this.score = 0;
         this.addBG();
         this.addScoreText();
-        this.player = new PlayerDTTS(this.name, new Vector2(100,100), new Vector2(30,30));
+        this.player = new PlayerDTTS(this.name, new Vector2(200,250), new Vector2(30,30));
         this.spikePool = new SpikePool(this.name, 1);
         this.particle = new Particle(this.name, this.player);
         this.addWall();
@@ -44,10 +51,11 @@ class GameScene extends Scene {
     }
 
     private createAudioChannel() {
-        this.jumpsound = new AudioChannel(this.name, JUMP_SOUND, 'jump')
+        this.jumpsound = new AudioChannel(this.name, JUMP_SOUND, 'jump');
     }
 
     public entry() {
+        AudioPlayer.play('bgm');
         this.player.entry();
         this.spikePool.entry();
         this.score = 0;
@@ -58,18 +66,12 @@ class GameScene extends Scene {
         super.update(delta);
         //if (Renderer.shaking) Renderer.rePosScreen(delta);
         this.player.update(delta);
-        this.particle.update(delta)
+        this.particle.update(delta);
 
         this.spikePool.update(delta);
         this.scoreText.text[0] = String(this.score);
-        if (this.player.dead) {
-            this.GameOver();
-        }
         if (this.player.touchWall) {
-            this.increase();
-        }
-        if (this.player.jumping) {
-            this.particle.emitParticle(this.name, this.player, 0);
+            Observer.raiseEvent('touch');
         }
         if (SceneManager.pausing) return;
     }
@@ -82,20 +84,25 @@ class GameScene extends Scene {
 
     public override reset() {
         super.reset();
+
         this.player.reset();
         this.spikePool.reset();
         this.particle.reset();
    }
 
     private increase() {
+        if (this.player.currentState instanceof PlayingState) {
+
         this.jumpsound.play();
         if (this.score%10==5 && this.spikePool.length()<7) {
             this.spikePool.addSpike(this.name);
         }
-        this.spikePool.show();
         this.score++;
         if (this.score>ScoreManager.highscore) {
             ScoreManager.setHighScore(this.score);
+
+        }
+
         }
         //Renderer.screenShake();
         

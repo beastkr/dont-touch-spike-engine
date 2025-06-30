@@ -1,10 +1,7 @@
 import Scene from "../../core/game-engine/Scene";
-import Camera from "../../core/graphics/Camera";
-import Renderer from "../../core/graphics/Renderer";
 import Button from "../../core/components/ui-components/Button";
 import Cursor from "../../core/components/ui-components/Cursor";
 import Vector2 from "../../core/components/Vector2";
-import ColliderController from "../../core/components/Collider/ColliderController";
 import SceneManager from "../../core/game-engine/SceneManager";
 import GameObject from "../../core/game-objects/GameObject";
 import SpriteRenderer from "../../core/graphics/SpriteRenderer";
@@ -12,7 +9,7 @@ import { BACKGROUND_IMAGE, BUTTON_SPRITE, LOGO } from "../../constants/global";
 import ScoreManager from "../objects/ScoreManager";
 import Text from "../../core/components/ui-components/Text";
 import { BGM } from "../../constants/sfx";
-import AudioPlayer from "../../core/Audio/AudioPlayer";
+
 class MenuScene extends Scene {
     private scoreText: Text;
     private prevScoreText: Text;
@@ -63,12 +60,22 @@ class MenuScene extends Scene {
 
     }
     public entry() {
-        AudioPlayer.play('bgm');
+        
         ScoreManager.initialize();
         let highscore = ScoreManager.highscore;
         this.scoreText.text[0] = "Highscore: "+String(highscore);
         this.prevScoreText.text[0] = "Score: " + String(ScoreManager.score)
+        this.resetCursor();
     }
+
+    private resetCursor() {
+        for (var g of this.gameObject) {
+            if (g instanceof Cursor) {
+                g = new Cursor(this.name, new Vector2(0,0), new Vector2(20,20));
+            }
+        }
+    }
+
     private addScoreText() {
         this.scoreText = new Text(this.name, new Vector2(200,200), new Vector2(), ['', '20px PressStart', 'white']);
         this.prevScoreText = new Text(this.name, new Vector2(200,230), new Vector2(), ['', '20px PressStart', 'white']);

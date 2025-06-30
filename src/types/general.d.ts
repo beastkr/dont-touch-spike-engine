@@ -22,6 +22,7 @@ interface IScene {
     preloadimg: string[];
     preloadsfx: string[];
     created: boolean;
+    pushGameObject(gameObject: IGameObject): void;
     update(delta:number): void;
     render(delta: number): void;
     reset(): void;
@@ -63,6 +64,7 @@ interface IVector2 extends IComponent{
     x: number;
     y: number;
     squaredistance(other: IVector2): number;
+    mul(n: number): IVector2;
 }
 interface ICollider extends IComponent{
     position: IVector2;

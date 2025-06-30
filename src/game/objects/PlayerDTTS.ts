@@ -8,7 +8,13 @@ import InputManager from "../../core/InputManager";
 import Force from "../../core/physics/Force";
 import Physics from "../../core/physics/Physics";
 import RigidBody from "../../core/physics/RigidBody";
+import Observer from "./observer/Observer";
 import Particle from "./Particle";
+import DeadState from "./states/DeadStates";
+import PlayerState from "./states/PlayerState";
+import PlayingState from "./states/PlayingState";
+import RescueState from "./states/RescueState";
+import RocketState from "./states/RocketState";
 
 class PlayerDTTS extends Player{
     public rb: RigidBody;
@@ -21,27 +27,45 @@ class PlayerDTTS extends Player{
     public touchWall: boolean = false;
     public jumping: boolean = false;
     public active: boolean = true;
+    private states: { [key: string]: PlayerState };
+    public currentState: PlayerState;
+    public dieOnce: boolean = false;
 
     constructor(sceneKey: string, pos?: IVector2, scale?: IVector2) {
         super(sceneKey, pos, scale);
         this.rb = new RigidBody(this.transform.position, this.transform.scale);
         this.setUpAnimator();
         this.collider.scale.y = this.transform.scale.y/2;
+        this.states = {
+            playing: new PlayingState(this),
+            dead: new DeadState(this),
+            rescue: new RescueState(this),
+        }
+        this.setState('playing');
+        Observer.attach('gameover', 'dieOnceReset', ()=> {
+            this.dieOnce = false;
+            this.dead = false;
+        })
     }
 
     public update(delta: number) {
         if (this.active){
+                           
             super.update(delta);
-            this.flagreset();
-            this.checkAllCollider();
-            this.checkBouncing();
-            if (this.touchGround && this.rb.velocity.y>=0) this.rb.velocity.y = 0;
-            else {Physics.addforce(this.rb, Physics.gravity)}
-            this.jump();
+            this.currentState.onUpdate(delta);
+
             this.rb.update(delta, this.transform);
+            if (this.dead) Observer.raiseEvent('gameover');
         }
+        console.log(this.dieOnce)
+        console.log('dead:' , this.dead)
 
+    }
 
+    public setState(name: string) {
+        if (this.currentState) this.currentState.onExit();
+        this.currentState = this.states[name];
+        this.currentState.onEnter();
     }
 
     public disable() {
@@ -51,17 +75,14 @@ class PlayerDTTS extends Player{
         this.active = true;
     }
 
-    private checkAllCollider() {
+    public checkAllCollider() {
         let coll = this.collider.checkCollide();
         for (var c of coll) {
             if (c.layer == 'wall') {
                 this.bounced = true;
             }
-            if (c.layer == 'ground') {
-                this.touchGround = true;
-            }
             if (c.layer == 'spike') {
-                this.dead = true;
+                this.setState('dead');
             }
         }
     }
@@ -70,12 +91,11 @@ class PlayerDTTS extends Player{
     public flagreset() {
         this.touchWall = false;
         this.touchGround = false;
-        this.dead = false;
         this.bounced = false;
         this.jumping = false;
     }
     
-    private checkBouncing() {
+    public checkBouncing() {
         let t = this.collider.collide('wall')[1]
         if (!t){
             this.bouncable = true;
@@ -90,6 +110,7 @@ class PlayerDTTS extends Player{
 
         super.render(delta, campos);
         this.animator.play(delta);
+        this.currentState.onRender(delta, campos);
     }
 
     private setUpAnimator() {
@@ -98,7 +119,7 @@ class PlayerDTTS extends Player{
         this.animator.loadAnim(true, PLAYER_SPRITE, 16, 16);
     }
 
-    private bounce() {
+    public bounce() {
         if (this.bouncable) {
             this.rb.velocity.x = -this.rb.velocity.x;
             this.bouncable = false;
@@ -108,12 +129,13 @@ class PlayerDTTS extends Player{
 
     }
 
-    private jump() {
+    public jump() {
         if ((InputManager.key == ' ' || InputManager.mousepos[2]!=0) && this.canJump) {
+            Observer.raiseEvent('jump')
             this.jumping = true;
             this.rb.velocity.y = -JUMP_FORCE;
             this.canJump = false;
-            InputManager.mousepos[2] =0;
+            InputManager.mousepos[2] = 0;
         }
 
         if ((InputManager.key == '' && InputManager.mousepos[2] == 0) && !this.canJump) {
@@ -129,7 +151,8 @@ class PlayerDTTS extends Player{
     }
 
     public entry(): void {
-        Physics.addforce(this.rb, new Force(this.speed));
+        this.dieOnce = false;
+        this.setState('playing');
     }
 
 

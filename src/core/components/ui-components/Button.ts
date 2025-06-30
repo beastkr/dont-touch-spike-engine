@@ -23,6 +23,9 @@ class Button extends CollidableObject implements IButton, ICollidableGameObject 
         this.collider.layer = 'button';
 
     }
+    public entry() {
+
+    }
 
     public override update(delta: number) {
         super.update(delta);
@@ -67,6 +70,10 @@ class Button extends CollidableObject implements IButton, ICollidableGameObject 
     }
     private onhover() {
         this.spriterenderer.color[3] = 1;
+    }
+
+    public reset(): void {
+        this.hovered = false;
     }
 }
 
