@@ -1,24 +1,22 @@
-import Gravity from './Gravity'
+import Vector2 from '../components/Vector2'
 import Force from './Force'
-import Vector2 from '../components/Vector2';
-import Transform from '../components/Transform';
-import RigidBody from './RigidBody';
-import Player from '../game-objects/Player';
+import Gravity from './Gravity'
+import RigidBody from './RigidBody'
 
 class Physics {
-    static gravity: Gravity;
+    static gravity: Gravity
     static initialize() {
-        Physics.gravity = new Gravity();
+        Physics.gravity = new Gravity()
     }
     static addforce(transform: RigidBody, force: Force) {
-        transform.onAddForce(force);
+        transform.onAddForce(force)
     }
 
     static stopforce(transform: RigidBody, force: Force) {
-        transform.onStopForce(force);
+        transform.onStopForce(force)
     }
     static applyGravity(delta: number, transform: RigidBody) {
-        let t = new Vector2(0, Physics.gravity.power.y*delta)
+        let t = new Vector2(0, Physics.gravity.power.y * delta)
         transform.onAddForce(Physics.gravity)
     }
 }

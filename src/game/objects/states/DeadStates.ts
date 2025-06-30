@@ -20,7 +20,7 @@ class DeadState extends PlayerState {
         this.unbounce();
         this.bounce();
         if (this.player.touchGround && this.player.rb.velocity.y>=0) this.player.rb.velocity.y = 0;
-        else {Physics.addforce(this.player.rb, Physics.gravity)}    
+        else Physics.addforce(this.player.rb, Physics.gravity);    
 
     }
 

@@ -1,10 +1,9 @@
-import Scene from "../../core/game-engine/Scene";
+import Scene from '../../core/game-engine/Scene'
 
 class OverScene extends Scene {
     constructor() {
-        super('over');
+        super('over')
     }
-
 }
 
-export default OverScene;
+export default OverScene

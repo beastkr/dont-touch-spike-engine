@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Typescript template project",
   "main": "index.js",
-  "homepage":"https://beastkr.github.io/dont-touch-spike-engine/",
+  "homepage": "https://beastkr.github.io/dont-touch-spike-engine/",
   "scripts": {
     "dev": "webpack serve --config webpack/webpack.dev.js",
     "build": "rimraf dist && webpack --config webpack/webpack.prod.js",
@@ -37,7 +37,7 @@
     "@typescript-eslint/parser": "^5.30.6",
     "copy-webpack-plugin": "^10.1.0",
     "eslint": "^8.42.0",
-    "eslint-plugin-unused-imports": "^2.0.0",
+    "eslint-plugin-unused-imports": "^4.1.4",
     "gh-pages": "^6.3.0",
     "html-webpack-plugin": "^5.5.0",
     "javascript-obfuscator": "^4.0.0",

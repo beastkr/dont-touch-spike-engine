@@ -16,9 +16,10 @@ class RescueState extends PlayerState {
         super(player);
         this.addButton();
 
-        this.cursor = new Cursor(SceneManager.getCurrentScene().name, new Vector2(), new Vector2(20,20))
+        this.cursor = new Cursor(SceneManager.getCurrentScene().name, new Vector2(), new Vector2(20, 20))
+
     }
-    public onEnter(): void{
+    public onEnter(): void {
         if (this.player.dieOnce) {
             console.log('ngu vl')
             Observer.raiseEvent('gameover')
@@ -27,25 +28,24 @@ class RescueState extends PlayerState {
         this.cursor.reset();
         this.progress = 0;
         this.player.dieOnce = true;
-
     }
 
     public onUpdate(delta: number): void {
         Observer.raiseEvent('spike')
-        this.progress+=delta;
+        this.progress += delta;
         console.log('rescue now!!!!');
         this.killButton.update(delta);
         this.rescueButton.update(delta);
         this.cursor.update(delta);
-        if (this.progress>=5) {
+        if (this.progress >= 5) {
             Observer.raiseEvent('gameover');
         }
     }
     public onRender(delta: number, camPos?: IVector2) {
         Renderer.fill('black', 0.4);
         this.rescueButton.render(delta, camPos);
-        this.killButton.render(delta, camPos)
-        this.cursor.render(delta, camPos)
+        this.killButton.render(delta, camPos);
+        this.cursor.render(delta, camPos);
     }
 
     public onExit(): void {
@@ -56,7 +56,7 @@ class RescueState extends PlayerState {
         button.setText('Continue');
         button.text.text[1] = "15px PressStart";
         button.text.text[2] = 'white';
-        button.addonclick(()=>{
+        button.addonclick(() => {
             this.player.setState('playing');
         });
         this.rescueButton = button;
@@ -64,7 +64,7 @@ class RescueState extends PlayerState {
         b.setText('Menu');
         b.text.text[1] = "15px PressStart";
         b.text.text[2] = 'white';
-        b.addonclick(()=>{
+        b.addonclick(() => {
             Observer.raiseEvent('gameover');
         });
         this.killButton = b;

@@ -1,105 +1,111 @@
-type Color = [number, number, number, number];
-
+type Color = [number, number, number, number]
 
 interface IGameEngine {
-    loop(): void;
-    update(delta: number): void;
-    render(delta: number): void;
-    start();            
+    loop(): void
+    update(delta: number): void
+    render(delta: number): void
+    start()
 }
 
 interface ISceneManager {
-    activeScene: string;
-    sceneList: Map<string, IScene>;
-    update(delta: number): void;
-    render(delta: number): void;
+    activeScene: string
+    sceneList: Map<string, IScene>
+    update(delta: number): void
+    render(delta: number): void
 }
 
 interface IScene {
-    name: string;
-    camera: ICamera;
-    gameObject: IGameObject[];
-    preloadimg: string[];
-    preloadsfx: string[];
-    created: boolean;
-    pushGameObject(gameObject: IGameObject): void;
-    update(delta:number): void;
-    render(delta: number): void;
-    reset(): void;
-    entry(): void;
-    create(): void;
+    name: string
+    camera: ICamera
+    gameObject: IGameObject[]
+    preloadimg: string[]
+    preloadsfx: string[]
+    created: boolean
+    pushGameObject(gameObject: IGameObject): void
+    update(delta: number): void
+    render(delta: number): void
+    reset(): void
+    entry(): void
+    create(): void
 }
 
-interface ITime {
-}
+interface ITime {}
 
 interface IGameObject {
-    transform: ITransform;
-    spriterenderer: ISpriteRenderder;
-    originalTransform: ITransform;
-    update(delta:number): void;
-    render(delta:number, campos?: IVector2): void;
-    reset(): void;
+    transform: ITransform
+    spriterenderer: ISpriteRenderder
+    originalTransform: ITransform
+    update(delta: number): void
+    render(delta: number, campos?: IVector2): void
+    reset(): void
 }
-interface ICollidableGameObject extends IGameObject{
-    collider: ICollider;
+interface ICollidableGameObject extends IGameObject {
+    collider: ICollider
 }
 
 interface IAnimatedGameObject extends IGameObject {
-    spriterenderer: ISpriteRenderder;
-    animator: IAnimator;
+    spriterenderer: ISpriteRenderder
+    animator: IAnimator
 }
 
-interface IComponent {
-
+interface IComponent {}
+interface ITransform extends IComponent {
+    position: IVector2
+    rotation: number
+    scale: IVector2
+    flip: IVector2
+    update(delta: number)
 }
-interface ITransform extends IComponent{
-    position: IVector2;
-    rotation: number;
-    scale: IVector2;
-    flip: IVector2;
-    update(delta: number);
+interface IVector2 extends IComponent {
+    x: number
+    y: number
+    squaredistance(other: IVector2): number
+    mul(n: number): IVector2
 }
-interface IVector2 extends IComponent{
-    x: number;
-    y: number;
-    squaredistance(other: IVector2): number;
-    mul(n: number): IVector2;
-}
-interface ICollider extends IComponent{
-    position: IVector2;
-    scale: IVector2;
-    layer: string;
-    collide(target: string): [Collider, boolean];
+interface ICollider extends IComponent {
+    position: IVector2
+    scale: IVector2
+    layer: string
+    collide(target: string): [Collider, boolean]
     checkCollide(): ICollider[]
-    drawDebug(ctx?: CanvasRenderingContext2D | null): void;
+    drawDebug(ctx?: CanvasRenderingContext2D | null): void
 }
-interface IBoxCollider extends ICollider{}
-interface ICircleCollider extends ICollider{}
+interface IBoxCollider extends ICollider {}
+interface ICircleCollider extends ICollider {}
 
 interface ICamera {
-    transform: ITransform;
+    transform: ITransform
 }
 
-interface ISpriteRenderder extends IComponent{
-    color: Color;
-    rotation: number;
-    ctx: CanvasRenderingContext2D | null;
-    flipvector: IVector2;
-    imgpath: string;
+interface ISpriteRenderder extends IComponent {
+    color: Color
+    rotation: number
+    ctx: CanvasRenderingContext2D | null
+    flipvector: IVector2
+    imgpath: string
     image: HTMLImageElement
-    ctx: CanvasRenderingContext2D | null;
-    render(pos: Vector2, scale: Vector2, campos: Vector2, frameRect?: [number, number, number, number]): void;
-    rgb(): string;
-    flipimage(flipvector: IVector2): void;
-    rotate(degree: number): void;
+    ctx: CanvasRenderingContext2D | null
+    render(
+        pos: Vector2,
+        scale: Vector2,
+        campos: Vector2,
+        frameRect?: [number, number, number, number]
+    ): void
+    rgb(): string
+    flipimage(flipvector: IVector2): void
+    rotate(degree: number): void
 }
 
 interface IAnimator extends IComponent {
-    getCurrentFrameRect(): [number, number, number, number] | undefined;
-    loadAnim(spritesheet: boolean, source: string | string[], frameWidth?: number, frameHeight?: number): void;
-    play(delta: number): void;
-    stop(): void;
+    getCurrentFrameRect(): [number, number, number, number] | undefined
+    loadAnim(
+        spritesheet: boolean,
+        source: string | string[],
+        frameWidth?: number,
+        frameHeight?: number
+    ): void
+    play(delta: number): void
+    stop(): void
 }
 
 interface IButton extends IGameObject {}

@@ -1,2 +1,2 @@
-class Component implements IComponent{}
-export default Component;
+class Component implements IComponent {}
+export default Component
